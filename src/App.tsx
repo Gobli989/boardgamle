@@ -12,7 +12,7 @@ import {
 
 export default function App() {
   const [games, setGames] = useState<Game[] | null>(null);
-  const [guesses, setGuesses] = useState<Game[]>(new Array(5).fill(null));
+  const [guesses, setGuesses] = useState<(Game | null)[]>(new Array(5).fill(null));
   const [imageSize, setImageSize] = useState<number>(5);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [overlaysShown, setOverlaysShown] = useState<{
@@ -199,7 +199,7 @@ export default function App() {
           <h1 className='title'>Boardgamle</h1>
 
           {
-            foundCorrectGame.current ?
+            (foundCorrectGame.current || !guesses.includes(null)) ?
               <img src={correctGame.current?.imageURL} className='image-canvas image-correct' /> :
               <canvas className="image-canvas" ref={canvasRef} />
           }
