@@ -1,0 +1,25 @@
+.overlay {
+    display: flex;
+    pointer-events: none;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    z-index: 5;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    
+    transition:
+        opacity 200ms ease-in-out;
+}
+
+.overlay.overlay-shown {
+    pointer-events: all;
+    opacity: 1;
+    transition:
+        opacity 200ms ease-in-out;
+}

@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500&family=Ubuntu:wght@300;400;500&display=swap');
+
+:root {
+  --l-bg: #FEFEFA;
+  --l-bg-2: #F2F2BF;
+  --l-text: #1B1B1B;
+  --l-red: #F08080;
+  --l-green: #7CFC00;
+  --l-yellow: #FFBF00;
+
+  --d-bg: #1B1B1B;
+  --d-bg-2: #3C3C3C;
+  --d-text: #FEFEFA;
+  --d-red: #660000;
+  --d-green: #138808;
+  --d-yellow: #765116;
+
+  --bg: var(--l-bg);
+  --bg-2: var(--l-bg-2);
+  --text: var(--l-text);
+  --red: var(--l-red);
+  --green: var(--l-green);
+  --yellow: var(--l-yellow);
+
+  --br: 6px;
+}
+
+* {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+body {
+  margin: 0;
+
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body.dark {
+  --bg: var(--d-bg);
+  --bg-2: var(--d-bg-2);
+  --text: var(--d-text);
+  --red: var(--d-red);
+  --green: var(--d-green);
+  --yellow: var(--d-yellow);
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.container {
+  width: 600px;
+  border: 1px solid var(--bg-2);
+
+  display: flex;
+  justify-content: center;
+
+  margin: 32px 0;
+}
+
+.inner-container {
+  width: min(500px, calc(100% - 24px));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.inner-container > * {
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+}
+
+.subtitle {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.btn {
+  height: 40px;
+  font-weight: 700;
+  font-size: 1rem;
+  background: none;
+  border: 1px solid var(--text);
+  color: var(--text);
+  border-radius: var(--br);
+  cursor: pointer;
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+.btn:hover {
+  background-color: var(--bg-2);
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+.image-canvas {
+  width: min(300px, 100%);
+  min-height: 300px;
+  aspect-ratio: 1/1;
+  outline: 1px solid var(--text);
+  image-rendering: pixelated;
+}
+
+.image-canvas.image-correct {
+  min-height: unset;
+  aspect-ratio: unset;
+}
+
+.react-select__control {
+  background-color: var(--bg) !important;
+  border-color: var(--text) !important;
+}
+
+.react-select__single-value {
+  color: var(--text) !important;
+}
+
+.react-select__input {
+  color: var(--text) !important;
+}
+
+.react-select__menu {
+  background-color: var(--bg) !important;
+  border: 1px solid var(--text) !important;
+  border-radius: var(--br);
+}
+
+.react-select__menu-list {
+  color: var(--text) !important;
+}
+
+.react-select__option {
+  color: var(--text) !important;
+  background-color: var(--bg) !important;
+}
+
+.react-select__option:hover {
+  background-color: var(--bg-2) !important;
+  color: var(--text) !important;
+}
+
+.guesses {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.guess {
+  border: 1px solid var(--bg-2);
+  border-radius: var(--br);
+  height: 40px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
+
+.guess-failed {
+  background-color: var(--red);
+}
+
+.guess-success {
+  background-color: var(--green);
+}
+
+.guess-partial {
+  background-color: var(--yellow);
+}
+
+.game-label {
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.game-label:hover {
+  text-decoration: underline;
+}
+
+.game-publisher {
+  font-size: 1rem;
+  font-weight: 200;
+}
+
+.outside {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.outside-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  height: 40px;
+
+  padding: 10px;
+  border-radius: var(--br);
+  color: var(--text);
+  text-align: left;
+  vertical-align: middle;
+  transition: background-color 200ms ease-in-out;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.outside-btn-label {
+  display: inline-block;
+  margin-left: 10px;
+
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.outside-btn:hover .outside-btn-label {
+  opacity: 1;
+  transition: opacity 200ms ease-in-out;
+}
+
+.outside-btn-icon {
+  display: inline-block;
+  fill: var(--text);
+  height: 20px;
+}
+
+.outside-btn:hover {
+  background-color: var(--bg-2);
+  transition: background-color 200ms ease-in-out;
+}
+
+.overlay-container {
+  border: 1px solid var(--bg-2);
+  background-color: var(--bg);
+  border-radius: var(--br);
+
+  width: min(500px, calc(100% - 48px));
+  padding: 12px;
+}
+
+.overlay-container-x {
+  float:right;
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1rem;
+  color: var(--bg-2);
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--d-bg);
+    --bg-2: var(--d-bg-2);
+    --text: var(--d-text);
+    --red: var(--d-red);
+    --green: var(--d-green);
+    --yellow: var(--d-yellow);
+  }
+}
