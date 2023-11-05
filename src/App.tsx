@@ -67,8 +67,6 @@ export default function App() {
 
         correctGame.current = gamesArray[Math.floor(todays_seed * gamesArray.length)];
 
-        console.log(correctGame.current);
-
       })
   }, []);
 
@@ -160,7 +158,6 @@ export default function App() {
         <button
           className="outside-btn"
           onClick={() => {
-            console.log("Switched darkmode");
             setDarkModeEnabled(!darkModeEnabled);
           }}
         >
@@ -204,78 +201,85 @@ export default function App() {
               <canvas className="image-canvas" ref={canvasRef} />
           }
 
+          {foundCorrectGame.current || !guesses.includes(null) ? (
+            <>
+              <p className="game-over-name">{correctGame.current?.name} ({correctGame.current?.year})</p>
+            </>
+          ) : (
+            <>
+              <Select
+                className="react-select-container"
+                classNamePrefix='react-select'
+                options={games.filter(g => {
+                  return guesses.findIndex(g2 => g2?.id === g.id) === -1;
+                }).map(g => {
+                  return { value: g.id, label: `${g.name} (${g.year})` };
+                })}
+                onChange={(sel) => {
+                  if (!sel) return;
+                  const game = games.find(g => g.id === sel.value);
+                  if (!game) return;
+                  setSelectedGame(game);
+                }}
+              />
 
-          <Select
-            className="react-select-container"
-            classNamePrefix='react-select'
-            options={games.filter(g => {
-              return guesses.findIndex(g2 => g2?.id === g.id) === -1;
-            }).map(g => {
-              return { value: g.id, label: `${g.name} (${g.year})` };
-            })}
-            onChange={(sel) => {
-              if (!sel) return;
-              const game = games.find(g => g.id === sel.value);
-              if (!game) return;
-              setSelectedGame(game);
-            }}
-          />
+              <button
+                className="btn"
+                onClick={() => {
+                  if (!selectedGame) return alert("Please select a game");
+                  if (guesses.findIndex((g) => g?.id === selectedGame.id) !== -1)
+                    return alert("You already guessed this game");
 
-          <button
-            className="btn"
-            onClick={() => {
-              if (!selectedGame) return alert("Please select a game");
-              if (guesses.findIndex((g) => g?.id === selectedGame.id) !== -1)
-                return alert("You already guessed this game");
+                  const newGuesses = [...guesses];
+                  const emptyIndex = newGuesses.findIndex((g) => !g);
+                  if (emptyIndex === -1) return;
 
-              const newGuesses = [...guesses];
-              const emptyIndex = newGuesses.findIndex((g) => !g);
-              if (emptyIndex === -1) return;
+                  newGuesses[emptyIndex] = selectedGame;
 
-              newGuesses[emptyIndex] = selectedGame;
+                  setGuesses(newGuesses);
+                  setImageSize(imageSize + 5);
 
-              setGuesses(newGuesses);
-              setImageSize(imageSize + 5);
+                  const dd = new Map(dayData);
+                  const now = new Date();
+                  const data = dd.get({
+                    y: now.getFullYear(),
+                    m: now.getMonth(),
+                    d: now.getDate(),
+                  }) || {
+                    correctGame: correctGame.current?.id || -1,
+                    dayEnd: DayEnd.UNKNOWN,
+                    guesses: [],
+                  };
 
-              const dd = new Map(dayData);
-              const now = new Date();
-              const data = dd.get({
-                y: now.getFullYear(),
-                m: now.getMonth(),
-                d: now.getDate(),
-              }) || {
-                correctGame: correctGame.current?.id || -1,
-                dayEnd: DayEnd.UNKNOWN,
-                guesses: [],
-              };
+                  data.guesses = guesses.filter((g) => g !== null).map((g) => g.id);
 
-              data.guesses = guesses.filter((g) => g !== null).map((g) => g.id);
+                  if (selectedGame.id === correctGame.current?.id) {
+                    foundCorrectGame.current = true;
+                    alert("Correct!");
 
-              if (selectedGame.id === correctGame.current?.id) {
-                foundCorrectGame.current = true;
-                alert("Correct!");
+                    data.dayEnd = DayEnd.COMPLETED;
+                  }
 
-                data.dayEnd = DayEnd.COMPLETED;
-              }
+                  dd.set(
+                    {
+                      y: now.getFullYear(),
+                      m: now.getMonth(),
+                      d: now.getDate(),
+                    },
+                    data,
+                  );
 
-              dd.set(
-                {
-                  y: now.getFullYear(),
-                  m: now.getMonth(),
-                  d: now.getDate(),
-                },
-                data,
-              );
+                  setGuesses(newGuesses);
+                  setImageSize(imageSize + 5);
 
-            setGuesses(newGuesses);
-            setImageSize(imageSize + 5);
+                  if (selectedGame.id === correctGame.current?.id) {
+                    foundCorrectGame.current = true;
+                    alert('Correct!');
+                  }
 
-            if (selectedGame.id === correctGame.current?.id) {
-              foundCorrectGame.current = true;
-              alert('Correct!');
-            }
-
-          }}>Guess</button>
+                }}>Guess</button>
+            </>
+          )}
 
           <h2 className="subtitle">Guesses</h2>
 
@@ -285,14 +289,13 @@ export default function App() {
               return (
                 <div
                   key={i}
-                  className={`guess ${
-                    g.id === correctGame.current?.id
-                      ? "guess-success"
-                      : g.firstPublisherName ==
-                        correctGame.current?.firstPublisherName
+                  className={`guess ${g.id === correctGame.current?.id
+                    ? "guess-success"
+                    : g.firstPublisherName ==
+                      correctGame.current?.firstPublisherName
                       ? "guess-partial"
                       : "guess-failed"
-                  }`}
+                    }`}
                 >
                   <a
                     className="game-label"

@@ -15,7 +15,7 @@ export function CalendarOverlay(props: {
     year: number;
     month: number;
     day: number;
-  } | null>({ year: 2023, month: 9, day: 10 });
+  } | null>(null);
 
   return (
     <Overlay shown={props.shown}>
@@ -79,7 +79,7 @@ export function CalendarOverlay(props: {
           <span className="calendar-day-label">Fri</span>
           <span className="calendar-day-label">Sat</span>
 
-          {createWeek(month.year, month.month)}
+          {createWeek(month.year, month.month, setSelectedDay)}
         </div>
 
         <div
@@ -89,7 +89,7 @@ export function CalendarOverlay(props: {
         >
           {selectedDay !== null ? (
             <>
-              <span className="calendar-result-small">2023. July 22.</span>
+              <span className="calendar-result-small">{selectedDay.year}. {getMonthName(selectedDay.month)}. {selectedDay.day}</span>
               <span className="calendar-result-correct">
                 Correct Game: <a href="#">Scout</a>
               </span>
@@ -107,7 +107,11 @@ export function CalendarOverlay(props: {
   );
 }
 
-function createWeek(year: number, month: number) {
+function createWeek(year: number, month: number, setSelectedDay: React.Dispatch<React.SetStateAction<{
+  year: number;
+  month: number;
+  day: number;
+} | null>>) {
   const out = [];
 
   const firstDay = new Date(year, month, 1);
@@ -120,7 +124,7 @@ function createWeek(year: number, month: number) {
             {new Date(
               firstDay.getFullYear(),
               firstDay.getMonth(),
-              -j,
+              (-j + 1),
             ).getDate()}
           </span>
         </div>
@@ -134,7 +138,9 @@ function createWeek(year: number, month: number) {
 
     out.push(
       <>
-        <div className="calendar-day">
+        <div className="calendar-day" onClick={() => {
+          setSelectedDay({ year: year, month: month, day: i });
+        }}>
           <span>{date.getDate()}</span>
         </div>
       </>,
@@ -151,7 +157,7 @@ function createWeek(year: number, month: number) {
             {new Date(
               firstDay.getFullYear(),
               firstDay.getMonth() + 1,
-              j,
+              (j - lastDay.getDay() + 1),
             ).getDate()}
           </span>
         </div>

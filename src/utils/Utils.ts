@@ -24,8 +24,6 @@ export function loadDayData(): Map<Day, DayData> {
 
   const data = JSON.parse(dataString);
 
-  console.log("data:", data);
-
   const map = new Map<Day, DayData>();
 
   for (const dateString of Object.keys(dataString)) {
@@ -33,8 +31,6 @@ export function loadDayData(): Map<Day, DayData> {
 
     map.set(day, data[dateString] as DayData);
   }
-
-  console.log("map", map);
 
   return map;
 }
