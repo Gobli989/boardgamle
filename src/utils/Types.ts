@@ -5,6 +5,7 @@ export type DayData = {
 };
 
 export type Game = {
+  id: number;
   name: string;
   year: number;
   imageURL: string;
@@ -24,3 +25,7 @@ export enum DayEnd {
   COMPLETED,
   UNKNOWN,
 }
+
+export type ResponseGame = {
+  [key: string]: Game;
+};

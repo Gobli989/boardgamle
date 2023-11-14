@@ -276,7 +276,7 @@ body.dark {
     width: 90%;
   }
 }
-
+/* 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: var(--d-bg);
@@ -286,4 +286,4 @@ body.dark {
     --green: var(--d-green);
     --yellow: var(--d-yellow);
   }
-}
+} */

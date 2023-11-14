@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import Select from "react-select";
 import { CalendarOverlay } from "./components/calendaroverlay/CalendarOverlay";
 import InfoOverlay from "./components/infooverlay/InfoOverlay";
-import { Day, DayData, DayEnd } from "./utils/Types";
+import { Day, DayData, DayEnd, ResponseGame, Game } from "./utils/Types";
 import {
   isDarkModeEnabled,
   loadDayData,
@@ -137,6 +137,7 @@ export default function App() {
       />
 
       <div className="outside">
+        {/* Info overlay button */}
         <button className="outside-btn" onClick={() => {
           setOverlaysShown({ ...overlaysShown, info: !overlaysShown.info });
         }}>
@@ -146,15 +147,19 @@ export default function App() {
           </svg>
           <span className="outside-btn-label">Info</span>
         </button>
+
+        {/* Calendar overlay button */}
         <button className="outside-btn" onClick={() => {
           setOverlaysShown({ ...overlaysShown, calendar: !overlaysShown.info });
-        }}>
+        }} style={{ display: 'none' }}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className='outside-btn-icon'>
             {/* <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --> */}
             <path style={{ fill: 'var(--text)' }} d="M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192z" />
           </svg>
           <span className="outside-btn-label">Calendar</span>
         </button>
+
+        {/* Darkmode toggle button */}
         <button
           className="outside-btn"
           onClick={() => {
@@ -226,9 +231,11 @@ export default function App() {
               <button
                 className="btn"
                 onClick={() => {
+                  // Guess button click
                   if (!selectedGame) return alert("Please select a game");
-                  if (guesses.findIndex((g) => g?.id === selectedGame.id) !== -1)
+                  if (guesses.findIndex((g) => g?.id === selectedGame.id) !== -1) {
                     return alert("You already guessed this game");
+                  }
 
                   const newGuesses = [...guesses];
                   const emptyIndex = newGuesses.findIndex((g) => !g);
@@ -251,7 +258,7 @@ export default function App() {
                     guesses: [],
                   };
 
-                  data.guesses = guesses.filter((g) => g !== null).map((g) => g.id);
+                  data.guesses = guesses.filter((g) => g !== null).map((g) => g ? g.id : -1);
 
                   if (selectedGame.id === correctGame.current?.id) {
                     foundCorrectGame.current = true;
@@ -313,22 +320,7 @@ export default function App() {
 
         </div>
 
-
-
       </div>
     </>
   );
-}
-
-type Game = {
-  id: number;
-  name: string;
-  year: number;
-  imageURL: string;
-  firstPublisherName: string;
-  firstArtistName: string;
-}
-
-type ResponseGame = {
-  [key: string]: Game;
 }

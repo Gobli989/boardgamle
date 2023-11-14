@@ -83,9 +83,8 @@ export function CalendarOverlay(props: {
         </div>
 
         <div
-          className={`calendar-result ${
-            selectedDay === null ? "calendar-result-empty" : ""
-          }`}
+          className={`calendar-result ${selectedDay === null ? "calendar-result-empty" : ""
+            }`}
         >
           {selectedDay !== null ? (
             <>
@@ -115,17 +114,15 @@ function createWeek(year: number, month: number, setSelectedDay: React.Dispatch<
   const out = [];
 
   const firstDay = new Date(year, month, 1);
+  const now = new Date();
 
   for (let j = firstDay.getDay(); j > 0; j--) {
+    const d = new Date(firstDay.getFullYear(), firstDay.getMonth(), (-j + 1));
     out.push(
       <>
-        <div className="calendar-day calendar-day-off">
+        <div className="calendar-day calendar-day-off" key={d.toISOString()}>
           <span>
-            {new Date(
-              firstDay.getFullYear(),
-              firstDay.getMonth(),
-              (-j + 1),
-            ).getDate()}
+            {d.getDate()}
           </span>
         </div>
       </>,
@@ -138,7 +135,7 @@ function createWeek(year: number, month: number, setSelectedDay: React.Dispatch<
 
     out.push(
       <>
-        <div className="calendar-day" onClick={() => {
+        <div className="calendar-day" key={date.toISOString()} onClick={() => {
           setSelectedDay({ year: year, month: month, day: i });
         }}>
           <span>{date.getDate()}</span>
@@ -152,7 +149,7 @@ function createWeek(year: number, month: number, setSelectedDay: React.Dispatch<
   for (let j = lastDay.getDay(); j < 6; j++) {
     out.push(
       <>
-        <div className="calendar-day calendar-day-off">
+        <div className="calendar-day calendar-day-off" key={'last-day' + j}>
           <span>
             {new Date(
               firstDay.getFullYear(),
