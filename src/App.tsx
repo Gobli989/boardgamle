@@ -9,8 +9,14 @@ import {
   saveDayData,
   seededRandom,
 } from "./utils/Utils";
+import CorrectGameEffect from "./components/correctgameeffect/CorrectGameEffect";
 
 export default function App() {
+
+  const [shouldPlayCorrectGameEffect, setShouldPlayCorrectGameEffect] = useState<boolean>(false);
+
+  // GAME
+
   const [games, setGames] = useState<Game[] | null>(null);
   const [guesses, setGuesses] = useState<(Game | null)[]>(new Array(5).fill(null));
   const [imageSize, setImageSize] = useState<number>(5);
@@ -67,6 +73,8 @@ export default function App() {
 
         correctGame.current = gamesArray[Math.floor(todays_seed * gamesArray.length)];
 
+        console.log(correctGame.current);
+
       })
   }, []);
 
@@ -116,6 +124,9 @@ export default function App() {
 
   return (
     <>
+
+      {/* Found correct game effect */}
+      <CorrectGameEffect play={shouldPlayCorrectGameEffect} setPlay={setShouldPlayCorrectGameEffect} />
 
       {/* INFO overlay */}
       <InfoOverlay
@@ -279,9 +290,12 @@ export default function App() {
                   setGuesses(newGuesses);
                   setImageSize(imageSize + 5);
 
+                  // Correct game was guessed
                   if (selectedGame.id === correctGame.current?.id) {
                     foundCorrectGame.current = true;
                     alert('Correct!');
+
+                    setShouldPlayCorrectGameEffect(true);
                   }
 
                 }}>Guess</button>

@@ -1,0 +1,46 @@
+.correct-game-container {
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    top: 0;
+    left: 0;
+
+    z-index: 10;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.correct-game-container.active {
+    display: flex;
+    animation: showBackground 3s ease-in-out forwards;
+}
+
+.correct-game-text {
+    font-weight: 700;
+    font-size: 7rem;
+    color: lime;
+}
+
+.correct-game-text.active {
+    animation: showText 3s ease-in-out forwards;
+}
+
+@keyframes showBackground {
+    0% { background-color: rgba(0, 0, 0, 0); }
+    20% { background-color: rgba(0, 0, 0, 0.5); }
+    80% { background-color: rgba(0, 0, 0, 0.5); }
+    100% { background-color: rgba(0, 0, 0, 0); }
+}
+
+@keyframes showText {
+    0% { transform: scale(0); }
+    15% { transform: scale(1.2); }
+    20% { transform: scale(1); }
+    80% { transform: scale(1); }
+    100% { transform: scale(0); }
+}
