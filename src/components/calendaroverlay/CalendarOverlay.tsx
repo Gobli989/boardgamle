@@ -114,7 +114,7 @@ function createWeek(year: number, month: number, setSelectedDay: React.Dispatch<
   const out = [];
 
   const firstDay = new Date(year, month, 1);
-  const now = new Date();
+  // const now = new Date();
 
   for (let j = firstDay.getDay(); j > 0; j--) {
     const d = new Date(firstDay.getFullYear(), firstDay.getMonth(), (-j + 1));

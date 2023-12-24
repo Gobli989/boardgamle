@@ -30,7 +30,7 @@ export default function App() {
   const foundCorrectGame = useRef<boolean>(false);
   const [darkModeEnabled, setDarkModeEnabled] = useState(isDarkModeEnabled());
 
-  const [dayData, setDayData] = useState<Map<Day, DayData>>(loadDayData());
+  const [dayData, /* setDayData*/] = useState<Map<Day, DayData>>(loadDayData());
 
   // To toggle dark dark mode
   useEffect(() => {
