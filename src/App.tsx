@@ -3,20 +3,19 @@ import Select from "react-select";
 import { CalendarOverlay } from "./components/calendaroverlay/CalendarOverlay";
 import InfoOverlay from "./components/infooverlay/InfoOverlay";
 import { ResponseGame } from "./types/ResponseGame";
-import { Day } from "./types/Day";
-import { DayEnd } from "./types/DayEnd";
 import { Game } from "./types/Game";
-import { DayData } from "./types/DayData";
+import { DayData, EMPTY_DAY_DATA } from "./types/DayData";
 import {
   isDarkModeEnabled,
   seededRandom,
 } from "./utils/Utils";
 import {
-  loadDayData,
-  saveDayData
+  loadDayData, setDayData
 } from "./utils/DataManager";
 import CorrectGameEffect from "./components/correctgameeffect/CorrectGameEffect";
 import { OutsideComp } from "./components/outside/OutsideComp";
+import Ad from "./components/ad/Ad";
+import { EAdType } from "./types/EAdType";
 
 export default function App() {
 
@@ -37,7 +36,7 @@ export default function App() {
   const foundCorrectGame = useRef<boolean>(false);
   const [darkModeEnabled, setDarkModeEnabled] = useState(isDarkModeEnabled());
 
-  const [dayData, /* setDayData*/] = useState<Map<Day, DayData>>(loadDayData());
+  const [todaysDayData, setTodaysDayData] = useState<DayData>(EMPTY_DAY_DATA);
 
   // To toggle dark dark mode
   useEffect(() => {
@@ -48,10 +47,17 @@ export default function App() {
     }
   }, [darkModeEnabled]);
 
-  // Save dayData as it changes
+  // Save todaysDayData as it changes
   useEffect(() => {
-    saveDayData(dayData);
-  }, [dayData]);
+
+    const now = new Date();
+    setDayData({
+      y: now.getFullYear(),
+      m: now.getMonth(),
+      d: now.getDate(),
+    }, todaysDayData);
+
+  }, [todaysDayData]);
 
   // Load games.json
   useEffect(() => {
@@ -82,7 +88,16 @@ export default function App() {
 
         console.log(correctGame.current);
 
-      })
+        setTodaysDayData({
+          ...todaysDayData,
+          correctGame: correctGame.current?.id || -1,
+        });
+
+      });
+
+    // Load day data
+    loadDayData();
+
   }, []);
 
   // Rendering the pixelated image
@@ -161,6 +176,8 @@ export default function App() {
         darkModeEnabled={darkModeEnabled}
       />
 
+      <Ad type={EAdType.TALL} />
+
       <div className="container">
 
         <div className="inner-container">
@@ -212,35 +229,35 @@ export default function App() {
                   setGuesses(newGuesses);
                   setImageSize(imageSize + 5);
 
-                  const dd = new Map(dayData);
-                  const now = new Date();
-                  const data = dd.get({
-                    y: now.getFullYear(),
-                    m: now.getMonth(),
-                    d: now.getDate(),
-                  }) || {
-                    correctGame: correctGame.current?.id || -1,
-                    dayEnd: DayEnd.UNKNOWN,
-                    guesses: [],
-                  };
+                  // const dd = new Map(dayData);
+                  // const now = new Date();
+                  // const data = dd.get({
+                  //   y: now.getFullYear(),
+                  //   m: now.getMonth(),
+                  //   d: now.getDate(),
+                  // }) || {
+                  //   correctGame: correctGame.current?.id || -1,
+                  //   dayEnd: DayEnd.UNKNOWN,
+                  //   guesses: [],
+                  // };
 
-                  data.guesses = guesses.filter((g) => g !== null).map((g) => g ? g.id : -1);
+                  // data.guesses = guesses.filter((g) => g !== null).map((g) => g ? g.id : -1);
 
-                  if (selectedGame.id === correctGame.current?.id) {
-                    foundCorrectGame.current = true;
-                    alert("Correct!");
+                  // if (selectedGame.id === correctGame.current?.id) {
+                  //   foundCorrectGame.current = true;
+                  //   alert("Correct!");
 
-                    data.dayEnd = DayEnd.COMPLETED;
-                  }
+                  //   data.dayEnd = DayEnd.COMPLETED;
+                  // }
 
-                  dd.set(
-                    {
-                      y: now.getFullYear(),
-                      m: now.getMonth(),
-                      d: now.getDate(),
-                    },
-                    data,
-                  );
+                  // dd.set(
+                  //   {
+                  //     y: now.getFullYear(),
+                  //     m: now.getMonth(),
+                  //     d: now.getDate(),
+                  //   },
+                  //   data,
+                  // );
 
                   setGuesses(newGuesses);
                   setImageSize(imageSize + 5);
@@ -290,6 +307,9 @@ export default function App() {
         </div>
 
       </div>
+
+      <Ad type={EAdType.TALL} />
+      
     </>
   );
 }

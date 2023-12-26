@@ -1,0 +1,40 @@
+.ad {
+}
+
+.ad-wide {
+    width: 350px;
+    height: 400px;
+
+    min-width: 350px;
+    min-height: 400px;
+}
+
+.ad-small {
+    
+}
+
+.ad-placement {
+    position: absolute;
+    background-color: red;
+
+    z-index: 2;
+}
+
+.ad-not-showing {
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid var(--bg-2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--bg-2);
+}
+
+.ad-not-showing span {
+    font-size: 1rem;
+    text-align: center;
+    max-width: 75%;
+}

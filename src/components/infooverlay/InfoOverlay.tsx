@@ -10,7 +10,7 @@ export default function InfoOverlay(props: {
         <span className="overlay-container-x" onClick={props.setShown}>
           &times;
         </span>
-        <h1>Info overlay</h1>
+        <h1>Info</h1>
         <p>
           Introducing Boardgamle, the ultimate online gaming experience for
           board game enthusiasts! Each day, players are greeted with a pixelated

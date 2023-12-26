@@ -31,7 +31,11 @@
     border-radius: var(--br);
 
     width: min(500px, calc(100% - 48px));
-    padding: 12px;
+    padding: 24px;
+}
+
+.overlay-container h1 {
+    margin: 0 0 24px 0;
 }
 
 .overlay-container-x {

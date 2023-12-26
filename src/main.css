@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500&family=Ubuntu:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
 
 :root {
   --l-bg: #FEFEFA;
@@ -26,7 +26,7 @@
 }
 
 * {
-  font-family: 'Inter', 'Arial', sans-serif;
+  font-family: 'Outfit', 'Arial', sans-serif;
 }
 
 body {
@@ -46,9 +46,11 @@ body.dark {
 
 #root {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  gap: 24px;
 
   min-height: 100vh;
   width: 100%;
@@ -202,14 +204,18 @@ body.dark {
   font-weight: 200;
 }
 
-
-
-
 @media screen and (max-width: 600px) {
+  #root {
+    flex-direction: column;
+  }
+
   .container {
     width: 90%;
+
+    min-width: unset;
   }
 }
+
 /* 
 @media (prefers-color-scheme: dark) {
   :root {
