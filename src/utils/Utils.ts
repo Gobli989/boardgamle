@@ -1,5 +1,11 @@
 import { Day, DayData } from "./Types";
 
+/**
+ * Custom seedable random number generator
+ * 
+ * @param seed seed for the random number generator
+ * @returns {number} random number between 0 and 1
+ */
 export function seededRandom(seed: number): number {
   const m = 1236967814;
   const a = 7618742178;
@@ -11,19 +17,32 @@ export function seededRandom(seed: number): number {
   );
 }
 
-export function isDarkModeEnabled() {
+/**
+ * Queries the browser to see if the user has enabled dark mode
+ * 
+ * @returns {boolean} True if the user has enabled dark mode
+ */
+export function isDarkModeEnabled(): boolean {
   return (
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
   );
 }
 
+/**
+ * Loads the DayData from local storage
+ * 
+ * @returns {Map<Day, DayData>} Map of Day objects to DayData objects
+ */
 export function loadDayData(): Map<Day, DayData> {
   const dataString = localStorage.getItem("boardgamle-data");
-  if (dataString == null) return new Map<Day, DayData>();
+
+  // Empty data
+  if (dataString == null) {
+    return new Map<Day, DayData>();
+  }
 
   const data = JSON.parse(dataString);
-
   const map = new Map<Day, DayData>();
 
   for (const dateString of Object.keys(dataString)) {
@@ -35,14 +54,27 @@ export function loadDayData(): Map<Day, DayData> {
   return map;
 }
 
+/**
+ * Saves the DayData to local storage
+ * 
+ * @param data Map of Day objects to DayData objects
+ */
 export function saveDayData(data: Map<Day, DayData>) {
   const obj = Object.create({});
+
   data.forEach((val, key) => {
     obj[`${key.y}-${key.m}-${key.d}`] = val;
   });
+
   localStorage.setItem("boardgamle-data", JSON.stringify(obj));
 }
 
+/**
+ * Converts a string in the format "YYYY-MM-DD" to a Day object
+ * 
+ * @param str String in the format "YYYY-MM-DD"
+ * @returns {Day} Day object
+ */
 export function stringToDay(str: string): Day {
   const split = str.split("-");
   return {
@@ -52,7 +84,13 @@ export function stringToDay(str: string): Day {
   };
 }
 
-export function getMonthName(month: number) {
+/**
+ * Formats a month number to a name
+ * 
+ * @param month Month number (0-11)
+ * @returns {string} Month name
+ */
+export function getMonthName(month: number): string {
   switch (month) {
     case 0:
       return "January";
