@@ -1,4 +1,5 @@
-import { Day, DayData } from "./Types";
+import { Day } from "../types/Day";
+import { DayData } from "../types/DayData";
 
 /**
  * Custom seedable random number generator

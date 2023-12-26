@@ -2,7 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import Select from "react-select";
 import { CalendarOverlay } from "./components/calendaroverlay/CalendarOverlay";
 import InfoOverlay from "./components/infooverlay/InfoOverlay";
-import { Day, DayData, DayEnd, ResponseGame, Game } from "./utils/Types";
+import { ResponseGame } from "./types/ResponseGame";
+import { Day } from "./types/Day";
+import { DayEnd } from "./types/DayEnd";
+import { Game } from "./types/Game";
+import { DayData } from "./types/DayData";
 import {
   isDarkModeEnabled,
   loadDayData,
