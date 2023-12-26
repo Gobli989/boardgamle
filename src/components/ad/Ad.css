@@ -10,13 +10,11 @@
 }
 
 .ad-small {
-    
+
 }
 
 .ad-placement {
     position: absolute;
-    background-color: red;
-
     z-index: 2;
 }
 
