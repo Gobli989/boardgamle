@@ -1,7 +1,7 @@
 import { DayEnd } from "./DayEnd";
 
 export type DayData = {
-  correctGame: number;
+  correctGame?: number;
   guesses: number[];
   dayEnd: DayEnd;
 };

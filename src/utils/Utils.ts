@@ -1,5 +1,4 @@
 import { Day } from "../types/Day";
-import { DayData } from "../types/DayData";
 
 /**
  * Custom seedable random number generator
@@ -31,46 +30,6 @@ export function isDarkModeEnabled(): boolean {
 }
 
 /**
- * Loads the DayData from local storage
- * 
- * @returns {Map<Day, DayData>} Map of Day objects to DayData objects
- */
-export function loadDayData(): Map<Day, DayData> {
-  const dataString = localStorage.getItem("boardgamle-data");
-
-  // Empty data
-  if (dataString == null) {
-    return new Map<Day, DayData>();
-  }
-
-  const data = JSON.parse(dataString);
-  const map = new Map<Day, DayData>();
-
-  for (const dateString of Object.keys(dataString)) {
-    const day = stringToDay(dateString);
-
-    map.set(day, data[dateString] as DayData);
-  }
-
-  return map;
-}
-
-/**
- * Saves the DayData to local storage
- * 
- * @param data Map of Day objects to DayData objects
- */
-export function saveDayData(data: Map<Day, DayData>) {
-  const obj = Object.create({});
-
-  data.forEach((val, key) => {
-    obj[`${key.y}-${key.m}-${key.d}`] = val;
-  });
-
-  localStorage.setItem("boardgamle-data", JSON.stringify(obj));
-}
-
-/**
  * Converts a string in the format "YYYY-MM-DD" to a Day object
  * 
  * @param str String in the format "YYYY-MM-DD"
@@ -83,6 +42,16 @@ export function stringToDay(str: string): Day {
     m: parseInt(split[1]),
     d: parseInt(split[2]),
   };
+}
+
+/**
+ * Converts a Day object to a string in the format "YYYY-MM-DD"
+ * 
+ * @param day Day object
+ * @returns {string} String in the format "YYYY-MM-DD"
+ */
+export function dayToString(day: Day): string {
+  return `${day.y}-${day.m}-${day.d}`;
 }
 
 /**
