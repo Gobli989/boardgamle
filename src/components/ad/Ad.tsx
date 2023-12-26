@@ -7,9 +7,14 @@ export default function Ad(props: { type: EAdType, slot: string }) {
     let adSize: {w:number, h:number} = {w: 350, h: 400};
 
     switch (props.type) {
+        case EAdType.TALL: {
+            adClass = "ad-tall";
+            adSize = {w: 350, h: 400};
+            break;
+        }
         case EAdType.WIDE: {
             adClass = "ad-wide";
-            adSize = {w: 350, h: 400};
+            adSize = {w: 600, h: 120};
             break;
         }
     }

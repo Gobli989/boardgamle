@@ -176,6 +176,7 @@ export default function App() {
         darkModeEnabled={darkModeEnabled}
       />
 
+      <Ad type={EAdType.WIDE} slot="3417622365" />
       <Ad type={EAdType.TALL} slot="2783768369" />
 
       <div className="container">
@@ -307,7 +308,8 @@ export default function App() {
         </div>
 
       </div>
-
+      
+      <Ad type={EAdType.WIDE} slot="1791031144" />
       <Ad type={EAdType.TALL} slot="4818904768" />
 
     </>
