@@ -1,3 +1,4 @@
+import './OutsideComp.css';
 
 export function OutsideComp(props: {
     setOverlaysShown: React.Dispatch<React.SetStateAction<{ info: boolean; calendar: boolean; }>>,

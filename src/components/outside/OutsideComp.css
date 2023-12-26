@@ -1,0 +1,75 @@
+.outside {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.outside-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    height: 40px;
+
+    padding: 10px;
+    border-radius: var(--br);
+    color: var(--text);
+    text-align: left;
+    vertical-align: middle;
+    transition: background-color 200ms ease-in-out;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.outside-btn-label {
+    display: inline-block;
+    margin-left: 10px;
+
+    opacity: 0;
+    transition: opacity 200ms ease-in-out;
+}
+
+.outside-btn:hover .outside-btn-label {
+    opacity: 1;
+    transition: opacity 200ms ease-in-out;
+}
+
+.outside-btn-icon {
+    display: inline-block;
+    fill: var(--text);
+    height: 20px;
+}
+
+.outside-btn:hover {
+    background-color: var(--bg-2);
+    transition: background-color 200ms ease-in-out;
+}
+
+@media screen and (max-width: 600px) {
+    .outside {
+        position: relative;
+        flex-direction: row;
+        left: 0;
+        width: calc(100% - 2 * 24px);
+        justify-content: space-between;
+    }
+
+    .outside-btn-label {
+        opacity: 1;
+    }
+
+    .outside-btn:last-child .outside-btn-label {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .outside-btn:last-child {
+        flex-direction: row-reverse;
+    }
+}

@@ -9,12 +9,14 @@ import { Game } from "./types/Game";
 import { DayData } from "./types/DayData";
 import {
   isDarkModeEnabled,
-  loadDayData,
-  saveDayData,
   seededRandom,
 } from "./utils/Utils";
+import {
+  loadDayData,
+  saveDayData
+} from "./utils/DataManager";
 import CorrectGameEffect from "./components/correctgameeffect/CorrectGameEffect";
-import { OutsideComp } from "./components/OutsideComp";
+import { OutsideComp } from "./components/outside/OutsideComp";
 
 export default function App() {
 
