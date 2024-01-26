@@ -47,6 +47,14 @@ export default function InfoOverlay(props: {
           </div>
 
         </div>
+
+        <p className="info-small">
+          Board game list sourced from <a href="https://boardgamegeek.com/">BoardGameGeek</a>.
+          Fonts used are under the <a href="https://openfontlicense.org">Open Font License</a>.
+          Icons are from the <a href="https://fontawesome.com/">Font Awesome Free</a> package.
+          Images shown are from the boardgame's publishers and their respective artists.
+        </p>
+
       </div>
     </Overlay>
   );

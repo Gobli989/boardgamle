@@ -23,3 +23,8 @@
 .info-color-box.info-green { background-color: var(--green); }
 .info-color-box.info-yellow { background-color: var(--yellow); }
 .info-color-box.info-red { background-color: var(--red); }
+
+.info-small {
+    font-size: 0.75rem;
+    font-style: italic;
+}
