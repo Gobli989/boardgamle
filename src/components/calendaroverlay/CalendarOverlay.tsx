@@ -19,7 +19,7 @@ export function CalendarOverlay(props: {
   } | null>(null);
 
   return (
-    <Overlay shown={props.shown}>
+    <Overlay shown={props.shown} key="CalendarOverlay">
       <div className="overlay-container calendar-overlay">
         <span className="overlay-container-x" onClick={props.setShown}>
           &times;

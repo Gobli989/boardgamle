@@ -115,14 +115,12 @@ body.dark {
 .image-canvas {
   width: min(300px, 100%);
   min-height: 300px;
-  aspect-ratio: 1/1;
   outline: 1px solid var(--text);
   image-rendering: pixelated;
 }
 
 .image-canvas.image-correct {
   min-height: unset;
-  aspect-ratio: unset;
 }
 
 .react-select__control {
@@ -227,3 +225,10 @@ body.dark {
     --yellow: var(--d-yellow);
   }
 } */
+
+.error-message {
+  color: var(--l-red);
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin: 0;
+}

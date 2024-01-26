@@ -1,0 +1,25 @@
+.info-colors-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-color {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+.info-color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--br);
+}
+
+.info-color-box.info-green { background-color: var(--green); }
+.info-color-box.info-yellow { background-color: var(--yellow); }
+.info-color-box.info-red { background-color: var(--red); }

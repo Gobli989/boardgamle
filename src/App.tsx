@@ -2,20 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import Select from "react-select";
 import { CalendarOverlay } from "./components/calendaroverlay/CalendarOverlay";
 import InfoOverlay from "./components/infooverlay/InfoOverlay";
-import { ResponseGame } from "./types/ResponseGame";
 import { Game } from "./types/Game";
-import { DayData, EMPTY_DAY_DATA } from "./types/DayData";
-import {
-  isDarkModeEnabled,
-  seededRandom,
-} from "./utils/Utils";
-import {
-  loadDayData, setDayData
-} from "./utils/DataManager";
 import CorrectGameEffect from "./components/correctgameeffect/CorrectGameEffect";
-import { OutsideComp } from "./components/outside/OutsideComp";
-import Ad from "./components/ad/Ad";
-import { EAdType } from "./types/EAdType";
+import { Toolbar } from "./components/toolbar/Toolbar";
+import { loadGames, selectTodaysGame } from "./utils/GameManager";
+import { LocalGameData } from "./types/LocalGameData";
+import { Guesses } from "./components/game/guesses/Guesses";
+import { renderCanvas } from "./utils/CanvasManager";
 
 export default function App() {
 
@@ -23,126 +16,67 @@ export default function App() {
 
   // GAME
 
-  const [games, setGames] = useState<Game[] | null>(null);
-  const [guesses, setGuesses] = useState<(Game | null)[]>(new Array(5).fill(null));
-  const [imageSize, setImageSize] = useState<number>(5);
+  const [localGameData, setLocalGameData] = useState<LocalGameData>({
+    games: [],
+    imageSize: 5,
+    guesses: new Array(5).fill(null),
+    correctGame: null,
+    overlayShown: {
+      info: false,
+      calendar: false,
+    },
+    darkMode: false
+  });
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
-  const [overlaysShown, setOverlaysShown] = useState<{
-    info: boolean;
-    calendar: boolean;
-  }>({ info: false, calendar: false });
-  const canvasRef = useRef(null);
-  const correctGame = useRef<Game | null>(null);
-  const foundCorrectGame = useRef<boolean>(false);
-  const [darkModeEnabled, setDarkModeEnabled] = useState(isDarkModeEnabled());
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [todaysDayData, setTodaysDayData] = useState<DayData>(EMPTY_DAY_DATA);
+  // TODO: const [todaysDayData, setTodaysDayData] = useState<DayData>(EMPTY_DAY_DATA);
 
   // To toggle dark dark mode
   useEffect(() => {
-    if (darkModeEnabled) {
+    if (localGameData.darkMode) {
       document.body.classList.remove("dark");
     } else {
       document.body.classList.add("dark");
     }
-  }, [darkModeEnabled]);
+  }, [localGameData.darkMode]);
 
-  // Save todaysDayData as it changes
-  useEffect(() => {
+  // TODO: Save todaysDayData as it changes
+  // useEffect(() => {
 
-    const now = new Date();
-    setDayData({
-      y: now.getFullYear(),
-      m: now.getMonth(),
-      d: now.getDate(),
-    }, todaysDayData);
+  //   const now = new Date();
+  //   setDayData({
+  //     y: now.getFullYear(),
+  //     m: now.getMonth(),
+  //     d: now.getDate(),
+  //   }, todaysDayData);
 
-  }, [todaysDayData]);
+  // }, [todaysDayData]);
 
   // Load games.json
   useEffect(() => {
-    fetch('/games.json', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then((data: ResponseGame) => {
-        const gamesArray: Game[] = [];
+    loadGames().then((games) => {
 
-        for (const key in data) {
-          const d = data[key];
-          d.id = parseInt(key);
-          gamesArray.push(d);
-        }
-
-        setGames(gamesArray);
-
-        // Selects today's game
-
-        const now = new Date();
-        const todays_seed = seededRandom(parseInt("" + now.getFullYear() + now.getMonth() + now.getDate()));
-
-        correctGame.current = gamesArray[Math.floor(todays_seed * gamesArray.length)];
-
-        console.log(correctGame.current);
-
-        setTodaysDayData({
-          ...todaysDayData,
-          correctGame: correctGame.current?.id || -1,
+      // Pick a random game
+      selectTodaysGame(games).then((game) => {
+        setLocalGameData({
+          ...localGameData,
+          games: games,
+          correctGame: game
         });
-
       });
+    });
 
-    // Load day data
-    loadDayData();
+    // TODO: Load day data
+    // loadDayData();
 
   }, []);
 
-  // Rendering the pixelated image
-  useEffect(() => {
-    if (!correctGame.current || !canvasRef.current) return;
+  // Rendering the pixelated image while keeping the aspect ratio
+  useEffect(() => renderCanvas(localGameData, canvasRef), [localGameData, canvasRef]);
 
-    const canvas = canvasRef.current as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
-
-    if (!ctx) return;
-
-    const WIDTH = imageSize;
-    const HEIGHT = imageSize;
-
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-
-    const image = new Image();
-    image.src = correctGame.current.imageURL;
-
-    image.onload = () => {
-      const imgWidth = image.width;
-      const imgHeight = image.height;
-
-      const ratio = Math.max(WIDTH / imgWidth, HEIGHT / imgHeight);
-
-      const centerShiftX = (WIDTH - imgWidth * ratio) / 2;
-      const centerShiftY = (HEIGHT - imgHeight * ratio) / 2;
-
-      ctx.drawImage(
-        image,
-        0,
-        0,
-        imgWidth,
-        imgHeight,
-        centerShiftX,
-        centerShiftY,
-        imgWidth * ratio,
-        imgHeight * ratio,
-      );
-    };
-
-  }, [canvasRef, imageSize, correctGame.current]);
-
-  if (!games) return (<p>Loading...</p>);
+  if (!localGameData.games) return (<p>Loading...</p>);
 
   return (
     <>
@@ -152,32 +86,36 @@ export default function App() {
 
       {/* INFO overlay */}
       <InfoOverlay
-        shown={overlaysShown.info}
+        shown={localGameData.overlayShown.info}
         setShown={() => {
-          setOverlaysShown({ ...overlaysShown, info: !overlaysShown.info });
+          setLocalGameData({
+            ...localGameData,
+            overlayShown: {
+              ...localGameData.overlayShown,
+              info: !localGameData.overlayShown.info
+            }
+          })
         }}
       />
 
       {/* CALENDAR overlay */}
       <CalendarOverlay
-        shown={overlaysShown.calendar}
+        shown={localGameData.overlayShown.calendar}
         setShown={() => {
-          setOverlaysShown({
-            ...overlaysShown,
-            calendar: !overlaysShown.calendar,
-          });
+          setLocalGameData({
+            ...localGameData,
+            overlayShown: {
+              ...localGameData.overlayShown,
+              calendar: !localGameData.overlayShown.calendar
+            }
+          })
         }}
       />
 
-      <OutsideComp
-        setOverlaysShown={setOverlaysShown}
-        overlaysShown={overlaysShown}
-        setDarkModeEnabled={setDarkModeEnabled}
-        darkModeEnabled={darkModeEnabled}
+      <Toolbar
+        setLocalGameData={setLocalGameData}
+        localGameData={localGameData}
       />
-
-      <Ad type={EAdType.WIDE} slot="3417622365" />
-      <Ad type={EAdType.TALL} slot="2783768369" />
 
       <div className="container">
 
@@ -185,89 +123,65 @@ export default function App() {
           <h1 className='title'>Boardgamle</h1>
 
           {
-            (foundCorrectGame.current || !guesses.includes(null)) ?
-              <img src={correctGame.current?.imageURL} className='image-canvas image-correct' /> :
+            (localGameData.guesses.includes(localGameData.correctGame!) || !localGameData.guesses.includes(null)) ?
+              <img src={localGameData.correctGame?.imageURL} className='image-canvas image-correct' /> :
               <canvas className="image-canvas" ref={canvasRef} />
           }
 
-          {foundCorrectGame.current || !guesses.includes(null) ? (
+          {(localGameData.guesses.includes(localGameData.correctGame) || !localGameData.guesses.includes(null)) ? (
             <>
-              <p className="game-over-name">{correctGame.current?.name} ({correctGame.current?.year})</p>
+              <p className="game-over-name">{localGameData.correctGame?.name} ({localGameData.correctGame?.year})</p>
             </>
           ) : (
             <>
               <Select
                 className="react-select-container"
                 classNamePrefix='react-select'
-                options={games.filter(g => {
-                  return guesses.findIndex(g2 => g2?.id === g.id) === -1;
+                options={localGameData.games.filter(g => {
+                  return localGameData.guesses.findIndex(g2 => g2?.id === g.id) === -1;
                 }).map(g => {
                   return { value: g.id, label: `${g.name} (${g.year})` };
                 })}
                 onChange={(sel) => {
                   if (!sel) return;
-                  const game = games.find(g => g.id === sel.value);
+                  const game = localGameData.games.find(g => g.id === sel.value);
                   if (!game) return;
                   setSelectedGame(game);
                 }}
               />
 
+              <p className="error-message">{errorMessage}</p>
+
               <button
                 className="btn"
                 onClick={() => {
                   // Guess button click
-                  if (!selectedGame) return alert("Please select a game");
-                  if (guesses.findIndex((g) => g?.id === selectedGame.id) !== -1) {
-                    return alert("You already guessed this game");
+                  setErrorMessage("");
+
+                  if (!selectedGame) {
+                    setErrorMessage("Please select a game");
+                    return;
                   }
 
-                  const newGuesses = [...guesses];
+                  if (localGameData.guesses.findIndex((g) => g?.id === selectedGame.id) !== -1) {
+                    setErrorMessage("You already guessed this game");
+                    return;
+                  }
+
+                  const newGuesses = [...localGameData.guesses];
                   const emptyIndex = newGuesses.findIndex((g) => !g);
                   if (emptyIndex === -1) return;
 
                   newGuesses[emptyIndex] = selectedGame;
 
-                  setGuesses(newGuesses);
-                  setImageSize(imageSize + 5);
-
-                  // const dd = new Map(dayData);
-                  // const now = new Date();
-                  // const data = dd.get({
-                  //   y: now.getFullYear(),
-                  //   m: now.getMonth(),
-                  //   d: now.getDate(),
-                  // }) || {
-                  //   correctGame: correctGame.current?.id || -1,
-                  //   dayEnd: DayEnd.UNKNOWN,
-                  //   guesses: [],
-                  // };
-
-                  // data.guesses = guesses.filter((g) => g !== null).map((g) => g ? g.id : -1);
-
-                  // if (selectedGame.id === correctGame.current?.id) {
-                  //   foundCorrectGame.current = true;
-                  //   alert("Correct!");
-
-                  //   data.dayEnd = DayEnd.COMPLETED;
-                  // }
-
-                  // dd.set(
-                  //   {
-                  //     y: now.getFullYear(),
-                  //     m: now.getMonth(),
-                  //     d: now.getDate(),
-                  //   },
-                  //   data,
-                  // );
-
-                  setGuesses(newGuesses);
-                  setImageSize(imageSize + 5);
+                  setLocalGameData({
+                    ...localGameData,
+                    guesses: newGuesses,
+                    imageSize: localGameData.imageSize + 5
+                  });
 
                   // Correct game was guessed
-                  if (selectedGame.id === correctGame.current?.id) {
-                    foundCorrectGame.current = true;
-                    alert('Correct!');
-
+                  if (localGameData.guesses.includes(localGameData.correctGame)) {
                     setShouldPlayCorrectGameEffect(true);
                   }
 
@@ -277,40 +191,11 @@ export default function App() {
 
           <h2 className="subtitle">Guesses</h2>
 
-          <div className="guesses">
-            {guesses.map((g, i) => {
-              if (!g) return <div key={i} className="guess" />
-              return (
-                <div
-                  key={i}
-                  className={`guess ${g.id === correctGame.current?.id
-                    ? "guess-success"
-                    : g.firstPublisherName ==
-                      correctGame.current?.firstPublisherName
-                      ? "guess-partial"
-                      : "guess-failed"
-                    }`}
-                >
-                  <a
-                    className="game-label"
-                    href={`https://boardgamegeek.com/boardgame/${g.id}/`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {g.name} ({g.year})
-                  </a>
-                  <span className="game-publisher">{g.firstPublisherName}</span>
-                </div>
-              )
-            })}
-          </div>
+          <Guesses localGameData={localGameData} />
 
         </div>
 
       </div>
-      
-      <Ad type={EAdType.WIDE} slot="1791031144" />
-      <Ad type={EAdType.TALL} slot="4818904768" />
 
     </>
   );

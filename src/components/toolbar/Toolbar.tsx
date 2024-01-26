@@ -1,17 +1,22 @@
-import './OutsideComp.css';
+import { LocalGameData } from '../../types/LocalGameData';
+import './Toolbar.css';
 
-export function OutsideComp(props: {
-    setOverlaysShown: React.Dispatch<React.SetStateAction<{ info: boolean; calendar: boolean; }>>,
-    overlaysShown: { info: boolean; calendar: boolean; },
-    setDarkModeEnabled: React.Dispatch<React.SetStateAction<boolean>>,
-    darkModeEnabled: boolean,
+export function Toolbar(props: {
+    setLocalGameData: React.Dispatch<React.SetStateAction<LocalGameData>>,
+    localGameData: LocalGameData,
 }) {
     return <>
         <div className="outside">
 
             {/* Info overlay button */}
             <button className="outside-btn" onClick={() => {
-                props.setOverlaysShown({ ...props.overlaysShown, info: !props.overlaysShown.info });
+                props.setLocalGameData({
+                    ...props.localGameData,
+                    overlayShown: {
+                        ...props.localGameData.overlayShown,
+                        info: !props.localGameData.overlayShown.info
+                    }
+                });
             }}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className='outside-btn-icon'>
                     {/* <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->*/}
@@ -22,7 +27,13 @@ export function OutsideComp(props: {
 
             {/* Calendar overlay button */}
             <button className="outside-btn" onClick={() => {
-                props.setOverlaysShown({ ...props.overlaysShown, calendar: !props.overlaysShown.info });
+                props.setLocalGameData({
+                    ...props.localGameData,
+                    overlayShown: {
+                        ...props.localGameData.overlayShown,
+                        calendar: !props.localGameData.overlayShown.calendar
+                    }
+                });
             }} style={{ display: 'none' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className='outside-btn-icon'>
                     {/* <!--! Font Awesome Pro 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --> */}
@@ -35,10 +46,13 @@ export function OutsideComp(props: {
             <button
                 className="outside-btn"
                 onClick={() => {
-                    props.setDarkModeEnabled(!props.darkModeEnabled);
+                    props.setLocalGameData({
+                        ...props.localGameData,
+                        darkMode: !props.localGameData.darkMode
+                    });
                 }}
             >
-                {props.darkModeEnabled ? (
+                {props.localGameData.darkMode ? (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 512 512"
