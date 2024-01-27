@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Boardgamle | Daily Boardgame Quiz</title>
 
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
+    <link rel="shortcut icon" href="logo.svg" type="image/x-icon" />
 
     <meta name="description" content="Each day, a pixelated covert art of the Top 500 board games are shown. Can you guess it?">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -49,6 +49,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Hidden forms for netlify -->
+    <form name="bug_report" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="br_name">
+      <input type="email" name="br_email">
+      <textarea name="br_message"></textarea>
+    </form>
+    <form name="feedback" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="fb_name">
+      <input type="email" name="fb_email">
+      <textarea name="fb_message"></textarea>
+    </form>
+
   </body>
 
 </html>

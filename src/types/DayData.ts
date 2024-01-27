@@ -1,13 +1,5 @@
-import { DayEnd } from "./DayEnd";
+import { Game } from "./Game";
 
 export type DayData = {
-  correctGame?: number;
-  guesses: number[];
-  dayEnd: DayEnd;
+  guesses: (Game | null)[];
 };
-
-export const EMPTY_DAY_DATA: DayData = {
-  correctGame: undefined,
-  guesses: [],
-  dayEnd: DayEnd.PARTIAL,
-}

@@ -10,6 +10,8 @@ export type LocalGameData = {
     overlayShown: {
         info: boolean,
         calendar: boolean,
+        bugReport: boolean,
+        feedback: boolean,
     },
 
     darkMode: boolean,

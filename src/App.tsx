@@ -9,6 +9,8 @@ import { loadGames, selectTodaysGame } from "./utils/GameManager";
 import { LocalGameData } from "./types/LocalGameData";
 import { Guesses } from "./components/game/guesses/Guesses";
 import { renderCanvas } from "./utils/CanvasManager";
+import BugReportOverlay from "./components/bug_report_overlay/BugReportOverlay";
+import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
 
 export default function App() {
 
@@ -24,6 +26,8 @@ export default function App() {
     overlayShown: {
       info: false,
       calendar: false,
+      bugReport: false,
+      feedback: false
     },
     darkMode: false
   });
@@ -107,6 +111,34 @@ export default function App() {
             overlayShown: {
               ...localGameData.overlayShown,
               calendar: !localGameData.overlayShown.calendar
+            }
+          })
+        }}
+      />
+
+      {/* Bug report overlay */}
+        <BugReportOverlay
+          shown={localGameData.overlayShown.bugReport}
+          setShown={() => {
+            setLocalGameData({
+              ...localGameData,
+              overlayShown: {
+                ...localGameData.overlayShown,
+                bugReport: !localGameData.overlayShown.bugReport
+              }
+            })
+          }}
+        />
+
+      {/* Feedback overlay */}
+      <FeedbackOverlay
+        shown={localGameData.overlayShown.feedback}
+        setShown={() => {
+          setLocalGameData({
+            ...localGameData,
+            overlayShown: {
+              ...localGameData.overlayShown,
+              feedback: !localGameData.overlayShown.feedback
             }
           })
         }}
