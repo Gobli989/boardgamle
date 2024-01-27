@@ -24,10 +24,10 @@ export default function BugReportOverlay(props: {
                     <input type="hidden" name="form-name" value="bug_report" />
 
                     <label className="form-label" htmlFor="fb_name">
-                        Name <span className="req">*</span>
+                        Name
                         <span className="small">This is to give credit for a bugfix.</span>
                     </label>
-                    <input className="form-input" type="email" id="fb_name" name="fb_name" placeholder="John Doe" required />
+                    <input className="form-input" type="text" id="fb_name" name="fb_name" placeholder="John Doe" required />
 
                     <label className="form-label" htmlFor="br_email">Email</label>
                     <input className="form-input" type="email" id="email" placeholder="someone@example.com" />

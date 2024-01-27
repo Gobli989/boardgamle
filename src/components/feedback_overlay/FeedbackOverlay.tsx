@@ -24,10 +24,10 @@ export default function FeedbackOverlay(props: {
                     <input type="hidden" name="form-name" value="feedback" />
 
                     <label className="form-label" htmlFor="fb_name">
-                        Name <span className="req">*</span>
+                        Name
                         <span className="small">This is to give credit for features.</span>
                     </label>
-                    <input className="form-input" type="email" id="fb_name" name="fb_name" placeholder="John Doe" required />
+                    <input className="form-input" type="text" id="fb_name" name="fb_name" placeholder="John Doe" required />
 
                     <label className="form-label" htmlFor="fb_email">Email</label>
                     <input className="form-input" type="email" id="fb_email" name="fb_email" placeholder="someone@example.com" />
@@ -35,7 +35,7 @@ export default function FeedbackOverlay(props: {
                     <label className="form-label" htmlFor="fb_message">Message <span className="req">*</span></label>
                     <textarea className="form-input" name="fb_message" id="fb_message" rows={12} placeholder="Your message comes here..." required />
 
-                    <button className="form-button btn" type="submit">Send Report</button>
+                    <button className="form-button btn" type="submit">Send Feedback</button>
 
                 </form>
 

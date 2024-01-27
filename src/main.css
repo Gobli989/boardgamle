@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Outfit';
-  src: url('fonts/Outfit-VariableFont_wght.ttf') format('truetype');
+  src: url('/fonts/Outfit-VariableFont_wght.ttf') format('truetype');
 }
 
 :root {
@@ -53,9 +53,8 @@ body.dark a[href] {
 
 #root {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   gap: 24px;
 
@@ -288,4 +287,36 @@ textarea.form-input {
   opacity: 0;
   transition: opacity 200ms ease-in-out;
   content: ' Required';
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  padding: 12px 0;
+
+  border-top: 1px solid var(--bg-2);
+  color: var(--text);
+}
+
+.footer-text {
+  display: block;
+  margin: 0;
+}
+
+.footer-small {
+  font-size: 0.8rem;
+  color: var(--bg-2);
+}
+
+.footer-rainbow {
+  background-image: linear-gradient(to left,#ffbe0b, #fb5607, #ff006e);
+  color: transparent !important;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  font-weight: 700;
 }

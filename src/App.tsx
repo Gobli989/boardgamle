@@ -14,6 +14,8 @@ import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
 
 export default function App() {
 
+  const [commitId, setCommitId] = useState<string | null>(null);
+
   const [shouldPlayCorrectGameEffect, setShouldPlayCorrectGameEffect] = useState<boolean>(false);
 
   // GAME
@@ -75,6 +77,16 @@ export default function App() {
     // TODO: Load day data
     // loadDayData();
 
+    // load Commit ID
+    fetch('/commit.txt')
+      .then((res) => res.text())
+      .then((text) => {
+        setCommitId(text.trim());
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
   }, []);
 
   // Rendering the pixelated image while keeping the aspect ratio
@@ -117,18 +129,18 @@ export default function App() {
       />
 
       {/* Bug report overlay */}
-        <BugReportOverlay
-          shown={localGameData.overlayShown.bugReport}
-          setShown={() => {
-            setLocalGameData({
-              ...localGameData,
-              overlayShown: {
-                ...localGameData.overlayShown,
-                bugReport: !localGameData.overlayShown.bugReport
-              }
-            })
-          }}
-        />
+      <BugReportOverlay
+        shown={localGameData.overlayShown.bugReport}
+        setShown={() => {
+          setLocalGameData({
+            ...localGameData,
+            overlayShown: {
+              ...localGameData.overlayShown,
+              bugReport: !localGameData.overlayShown.bugReport
+            }
+          })
+        }}
+      />
 
       {/* Feedback overlay */}
       <FeedbackOverlay
@@ -149,7 +161,7 @@ export default function App() {
         localGameData={localGameData}
       />
 
-      <div className="container">
+      <main className="container">
 
         <div className="inner-container">
           <h1 className='title'>Boardgamle</h1>
@@ -227,7 +239,12 @@ export default function App() {
 
         </div>
 
-      </div>
+      </main>
+
+      <footer>
+        <p className="footer-text">Made with love by <a className="footer-rainbow" href="https://rubenxd.hu" target="_blank">Ruben</a>!</p>
+        <p className="footer-text footer-small">{commitId}</p>
+      </footer>
 
     </>
   );
