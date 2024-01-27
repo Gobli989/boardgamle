@@ -2,7 +2,6 @@ import { stringToDay } from "./Utils";
 
 import { Day } from "../types/Day";
 import { DayData } from "../types/DayData";
-import { DayEnd } from "../types/DayEnd";
 
 const gameData = new Map<Day, DayData>();
 
@@ -58,9 +57,7 @@ export function getDayData(day: Day): DayData {
     }
 
     return {
-        correctGame: undefined,
         guesses: [],
-        dayEnd: DayEnd.PARTIAL,
     };
 }
 
