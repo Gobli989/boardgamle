@@ -1,5 +1,3 @@
-import { Day } from "../types/Day";
-
 /**
  * Custom seedable random number generator
  * 
@@ -35,13 +33,10 @@ export function isDarkModeEnabled(): boolean {
  * @param str String in the format "YYYY-MM-DD"
  * @returns {Day} Day object
  */
-export function stringToDay(str: string): Day {
+export function stringToDay(str: string): Date {
   const split = str.split("-");
-  return {
-    y: parseInt(split[0]),
-    m: parseInt(split[1]),
-    d: parseInt(split[2]),
-  };
+
+  return new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]));
 }
 
 /**
@@ -50,8 +45,8 @@ export function stringToDay(str: string): Day {
  * @param day Day object
  * @returns {string} String in the format "YYYY-MM-DD"
  */
-export function dayToString(day: Day): string {
-  return `${day.y}-${day.m}-${day.d}`;
+export function dayToString(day: Date): string {
+  return `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`;
 }
 
 /**

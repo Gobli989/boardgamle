@@ -11,6 +11,8 @@ import { Guesses } from "./components/game/guesses/Guesses";
 import { renderCanvas } from "./utils/CanvasManager";
 import BugReportOverlay from "./components/bug_report_overlay/BugReportOverlay";
 import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
+import { LOCALDATA, getDayData, loadLocalData, setDayData } from "./utils/DataManager";
+import { dayToString } from "./utils/Utils";
 
 export default function App() {
 
@@ -48,49 +50,67 @@ export default function App() {
     }
   }, [localGameData.darkMode]);
 
-  // TODO: Save todaysDayData as it changes
-  // useEffect(() => {
-
-  //   const now = new Date();
-  //   setDayData({
-  //     y: now.getFullYear(),
-  //     m: now.getMonth(),
-  //     d: now.getDate(),
-  //   }, todaysDayData);
-
-  // }, [todaysDayData]);
-
   // Load games.json
   useEffect(() => {
+    loadLocalData();
+
+    // todo: Somewhy this is not working, it cant load localdata, idk why.
+    console.log('localData', LOCALDATA);
+
     loadGames().then((games) => {
 
       // Pick a random game
       selectTodaysGame(games).then((game) => {
+        const _todayData = getDayData(new Date());
+
+        console.log('todaysData', _todayData);
+
+        let _guesses: Game[] = [];
+
+        if (_todayData) {
+          _guesses = _todayData.guesses.map(g => games.find(g2 => g2.id === g) as Game);
+        }
+
         setLocalGameData({
           ...localGameData,
           games: games,
-          correctGame: game
+          correctGame: game,
+          guesses: new Array(5).fill(null).map((_, i) => _guesses[i] || null),
         });
       });
+
+
+
+
+
     });
 
-    // TODO: Load day data
-    // loadDayData();
+    // TODO: Load local data
+
+
 
     // load Commit ID
-    fetch('/commit.txt')
-      .then((res) => res.text())
-      .then((text) => {
-        setCommitId(text.trim());
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // TODO: Take this out, it's not needed
+    // fetch('/commit.txt')
+    //   .then((res) => res.text())
+    //   .then((text) => {
+    //     setCommitId(text.trim());
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
 
   }, []);
 
   // Rendering the pixelated image while keeping the aspect ratio
-  useEffect(() => renderCanvas(localGameData, canvasRef), [localGameData, canvasRef]);
+  useEffect(() => {
+
+    setDayData(new Date(), {
+      guesses: localGameData.guesses.filter(g => g !== null) as Game[]
+    });
+
+    renderCanvas(localGameData, canvasRef);
+  }, [localGameData, canvasRef]);
 
   if (!localGameData.games) return (<p>Loading...</p>);
 
