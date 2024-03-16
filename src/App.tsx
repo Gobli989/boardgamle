@@ -11,7 +11,8 @@ import { Guesses } from "./components/game/guesses/Guesses";
 import { renderCanvas } from "./utils/CanvasManager";
 import BugReportOverlay from "./components/bug_report_overlay/BugReportOverlay";
 import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
-import { getDayData, loadLocalData, saveLocalData, setDayData } from "./utils/DataManager";
+import { CURRENT_VERSION, getDayData, loadLocalData, saveLocalData, setDayData } from "./utils/DataManager";
+import ChangelogOverlay from "./components/changelogoverlay/ChangelogOverlay";
 
 export default function App() {
 
@@ -56,12 +57,18 @@ export default function App() {
       selectTodaysGame(games).then((game) => {
         const _localData = loadLocalData();
         const _guesses = getDayData(new Date(), _localData)?.guesses || [];
+        const _showChangelog = _localData.lastCheckedVersion < CURRENT_VERSION;
+        _localData.lastCheckedVersion = CURRENT_VERSION;
 
         setLocalGameData({
           ...localGameData,
           localData: _localData,
           games: games,
           correctGame: game,
+          overlayShown: {
+            ...localGameData.overlayShown,
+            changelog: _showChangelog,
+          },
           guesses: new Array(5).fill(null).map((_, i) => {
             if (_guesses.length > i) {
               return games.find(g => g.id === _guesses[i]) || null;
@@ -69,6 +76,8 @@ export default function App() {
             return null;
           }),
         });
+
+        saveLocalData(_localData);
       });
 
     });
@@ -96,6 +105,16 @@ export default function App() {
 
       {/* Found correct game effect */}
       <CorrectGameEffect play={shouldPlayCorrectGameEffect} setPlay={setShouldPlayCorrectGameEffect} />
+
+      <ChangelogOverlay shown={localGameData.overlayShown.changelog} setShown={() => {
+        setLocalGameData({
+          ...localGameData,
+          overlayShown: {
+            ...localGameData.overlayShown,
+            changelog: !localGameData.overlayShown.changelog
+          }
+        })
+      }} />
 
       {/* INFO overlay */}
       <InfoOverlay

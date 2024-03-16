@@ -5,7 +5,12 @@
 
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px;
+}
+
+.outside > * {
+    flex: 1 0 45%;
 }
 
 .outside-btn {
@@ -69,7 +74,7 @@
         margin-right: 10px;
     }
 
-    .outside-btn:last-child {
+    /* .outside-btn:last-child {
         flex-direction: row-reverse;
-    }
+    } */
 }

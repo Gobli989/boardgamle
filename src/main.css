@@ -47,8 +47,8 @@ body.dark {
   --yellow: var(--d-yellow);
 }
 
-body.dark a[href] {
-  color: red;
+a[href] {
+  color: var(--l-red);
 }
 
 #root {

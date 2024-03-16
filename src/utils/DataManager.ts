@@ -4,6 +4,10 @@ import { dayToString } from "./Utils";
 
 const CURRENT_VERSION = 1;
 
+export {
+    CURRENT_VERSION
+};
+
 /**
  * Loads in local data from localStorage
  */
@@ -19,7 +23,7 @@ export function loadLocalData(): LocalData {
     if (dataString) {
         const parsedData = JSON.parse(dataString);
 
-        if(!parsedData) {
+        if (!parsedData) {
             saveLocalData(DEFAULT_LOCALDATA);
             return DEFAULT_LOCALDATA;
         }
@@ -62,8 +66,8 @@ export function getDayData(date: Date, data: LocalData) {
  * @param localData Local data instance to set data on
  * @returns The edited local data
  */
-export function setDayData(date: Date, data: { guesses: (Game | null)[] }, localData: LocalData) : LocalData {
-    
+export function setDayData(date: Date, data: { guesses: (Game | null)[] }, localData: LocalData): LocalData {
+
     localData.games[dayToString(date)] = {
         guesses: data.guesses.filter(g => g !== null).map(g => g?.id || -1)
     };

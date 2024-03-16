@@ -32,6 +32,10 @@
 
     width: min(500px, calc(100% - 48px));
     padding: 24px;
+
+    max-height: 80%;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 .overlay-container h1 {
