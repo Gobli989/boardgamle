@@ -2,46 +2,39 @@ import { Game } from "../types/Game";
 import { LocalData } from "../types/LocalData";
 import { dayToString } from "./Utils";
 
-let LOCALDATA: LocalData | undefined = undefined;
-
-export {
-    LOCALDATA
-}
+const CURRENT_VERSION = 1;
 
 /**
  * Loads in local data from localStorage
  */
-export function loadLocalData() {
+export function loadLocalData(): LocalData {
+    console.log('loading local data');
 
     const dataString = localStorage.getItem('boardgamle');
+    const DEFAULT_LOCALDATA = {
+        lastCheckedVersion: 0,
+        games: {},
+    };
 
     if (dataString) {
         const parsedData = JSON.parse(dataString);
 
-        LOCALDATA = {
-            lastCheckedVersion: parsedData.lastCheckedVersion,
-            games: {}
+        if(!parsedData) {
+            saveLocalData(DEFAULT_LOCALDATA);
+            return DEFAULT_LOCALDATA;
         }
 
-        return;
+        return parsedData as LocalData;
     }
 
-    LOCALDATA = {
-        lastCheckedVersion: 0,
-        games: {}
-    };
-
-    saveLocalData();
+    saveLocalData(DEFAULT_LOCALDATA);
+    return DEFAULT_LOCALDATA;
 }
 
-export function setLocalData(data: LocalData) {
-    LOCALDATA = data;
-}
+export function saveLocalData(data: LocalData) {
+    console.log('saving local data');
 
-export function saveLocalData() {
-    if (!LOCALDATA) return;
-
-    localStorage.setItem('boardgamle', JSON.stringify(LOCALDATA));
+    localStorage.setItem('boardgamle', JSON.stringify(data));
 }
 
 /**
@@ -50,32 +43,30 @@ export function saveLocalData() {
  * @param date Date to search for
  * @returns guesses for the given date or null if no data is found
  */
-export function getDayData(date: Date) {
+export function getDayData(date: Date, data: LocalData) {
     const dateString = dayToString(date);
 
-    if (!LOCALDATA) return null;
-
-    if (LOCALDATA.games[dateString]) {
-        return LOCALDATA.games[dateString];
+    if (data.games[dateString]) {
+        return data.games[dateString];
     }
 
     return null;
 }
 
 /**
- * Sets guesses for the given date
+ * Edits the local data to set the guesses for the given date
+ * and then returns the edited local data
  * 
  * @param date Date to set data for
  * @param data Data to set
+ * @param localData Local data instance to set data on
+ * @returns The edited local data
  */
-export function setDayData(date: Date, data: { guesses: Game[] }) {
-    const dateString = dayToString(date);
+export function setDayData(date: Date, data: { guesses: (Game | null)[] }, localData: LocalData) : LocalData {
+    
+    localData.games[dayToString(date)] = {
+        guesses: data.guesses.filter(g => g !== null).map(g => g?.id || -1)
+    };
 
-    if (!LOCALDATA) return;
-
-    if (!LOCALDATA.games[dateString]) {
-        LOCALDATA.games[dateString] = { guesses: [] };
-    }
-    LOCALDATA.games[dateString].guesses = data.guesses.map(g => g.id);
-    saveLocalData();
+    return localData;
 }

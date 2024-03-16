@@ -11,12 +11,9 @@ import { Guesses } from "./components/game/guesses/Guesses";
 import { renderCanvas } from "./utils/CanvasManager";
 import BugReportOverlay from "./components/bug_report_overlay/BugReportOverlay";
 import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
-import { LOCALDATA, getDayData, loadLocalData, setDayData } from "./utils/DataManager";
-import { dayToString } from "./utils/Utils";
+import { getDayData, loadLocalData, saveLocalData, setDayData } from "./utils/DataManager";
 
 export default function App() {
-
-  const [commitId, setCommitId] = useState<string | null>(null);
 
   const [shouldPlayCorrectGameEffect, setShouldPlayCorrectGameEffect] = useState<boolean>(false);
 
@@ -24,6 +21,7 @@ export default function App() {
 
   const [localGameData, setLocalGameData] = useState<LocalGameData>({
     games: [],
+    localData: null,
     imageSize: 5,
     guesses: new Array(5).fill(null),
     correctGame: null,
@@ -31,15 +29,14 @@ export default function App() {
       info: false,
       calendar: false,
       bugReport: false,
-      feedback: false
+      feedback: false,
+      changelog: false,
     },
     darkMode: false
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // TODO: const [todaysDayData, setTodaysDayData] = useState<DayData>(EMPTY_DAY_DATA);
 
   // To toggle dark dark mode
   useEffect(() => {
@@ -50,65 +47,45 @@ export default function App() {
     }
   }, [localGameData.darkMode]);
 
-  // Load games.json
+  // Load games.json and local data
   useEffect(() => {
-    loadLocalData();
-
-    // todo: Somewhy this is not working, it cant load localdata, idk why.
-    console.log('localData', LOCALDATA);
 
     loadGames().then((games) => {
 
       // Pick a random game
       selectTodaysGame(games).then((game) => {
-        const _todayData = getDayData(new Date());
-
-        console.log('todaysData', _todayData);
-
-        let _guesses: Game[] = [];
-
-        if (_todayData) {
-          _guesses = _todayData.guesses.map(g => games.find(g2 => g2.id === g) as Game);
-        }
+        const _localData = loadLocalData();
+        const _guesses = getDayData(new Date(), _localData)?.guesses || [];
 
         setLocalGameData({
           ...localGameData,
+          localData: _localData,
           games: games,
           correctGame: game,
-          guesses: new Array(5).fill(null).map((_, i) => _guesses[i] || null),
+          guesses: new Array(5).fill(null).map((_, i) => {
+            if (_guesses.length > i) {
+              return games.find(g => g.id === _guesses[i]) || null;
+            }
+            return null;
+          }),
         });
       });
 
-
-
-
-
     });
-
-    // TODO: Load local data
-
-
-
-    // load Commit ID
-    // TODO: Take this out, it's not needed
-    // fetch('/commit.txt')
-    //   .then((res) => res.text())
-    //   .then((text) => {
-    //     setCommitId(text.trim());
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
 
   }, []);
 
-  // Rendering the pixelated image while keeping the aspect ratio
   useEffect(() => {
 
-    setDayData(new Date(), {
-      guesses: localGameData.guesses.filter(g => g !== null) as Game[]
-    });
+    if (!localGameData.localData) return;
 
+    // Save guesses to localStorage
+    saveLocalData(localGameData.localData);
+
+  }, [localGameData]);
+
+  // Rendering the pixelated image while keeping the aspect ratio
+  useEffect(() => {
     renderCanvas(localGameData, canvasRef);
   }, [localGameData, canvasRef]);
 
@@ -238,8 +215,17 @@ export default function App() {
 
                   newGuesses[emptyIndex] = selectedGame;
 
+                  const _localData = setDayData(
+                    new Date(),
+                    {
+                      guesses: newGuesses
+                    },
+                    localGameData.localData!
+                  );
+
                   setLocalGameData({
                     ...localGameData,
+                    localData: _localData,
                     guesses: newGuesses,
                     imageSize: localGameData.imageSize + 5
                   });
@@ -263,7 +249,7 @@ export default function App() {
 
       <footer>
         <p className="footer-text">Made with love by <a className="footer-rainbow" href="https://rubenxd.hu" target="_blank">Ruben</a>!</p>
-        <p className="footer-text footer-small">{commitId}</p>
+        <p className="footer-text footer-small">Game version: {localGameData.localData?.lastCheckedVersion}</p>
       </footer>
 
     </>
