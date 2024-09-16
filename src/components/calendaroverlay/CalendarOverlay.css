@@ -59,6 +59,10 @@
   font-weight: 600;
 }
 
+.calendar-day.today {
+  outline: 2px solid white;
+}
+
 .calendar-day.failed {
   outline: 1px solid var(--red);
 }

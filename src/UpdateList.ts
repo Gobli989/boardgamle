@@ -4,5 +4,11 @@ export const UPDATE_LIST = [
         changes: [
             "Added saving of guesses, so that the user can continue their game after refreshing the page or coming back later."
         ]
+    },
+    {
+        version: 2,
+        changes: [
+            ""
+        ]
     }
 ]
