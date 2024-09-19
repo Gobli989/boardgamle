@@ -4,7 +4,7 @@ export type LocalData = {
 
     games: {
         [key: string]: {
-            guesses: number[],
+            guesses: string[],
         }
     }
 

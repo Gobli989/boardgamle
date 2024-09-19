@@ -17,7 +17,7 @@ for (let i = 1; i <= 5; i++) {
     games = [...games, ...gamesArray];
 }
 
-console.log('game count:', games.length);
+console.log('Successfully fetched game ranklists');
 
 for(let i = 0; i < games.length; i++) {
     const game = games[i];
@@ -30,14 +30,14 @@ for(let i = 0; i < games.length; i++) {
     const updatedGame = parseGamePage(html, game);
     games[i] = updatedGame;
 
-    console.log('Game:', updatedGame.rank, updatedGame.rank, updatedGame.name, updatedGame.year, updatedGame.geekRating, updatedGame.complexityRating);
+    console.log('Game:', updatedGame.rank, updatedGame.name, updatedGame.year, updatedGame.geekRating, updatedGame.complexityRating);
     
-    if(i % 3 == 0) {
-        // Save cache every 3 games and wait for 5 seconds
-        saveCacheToFile();
+    // if(i % 3 == 0) {
+    //     // Save cache every 3 games and wait for 5 seconds
+    //     saveCacheToFile();
 
-        await Delay(5000);
-    }
+    //     await Delay(5000);
+    // }
 
 }
 

@@ -2,7 +2,7 @@ import { Game } from "../types/Game";
 import { LocalData } from "../types/LocalData";
 import { dayToString } from "./Utils";
 
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 
 export {
     CURRENT_VERSION
@@ -69,7 +69,7 @@ export function getDayData(date: Date, data: LocalData) {
 export function setDayData(date: Date, data: { guesses: (Game | null)[] }, localData: LocalData): LocalData {
 
     localData.games[dayToString(date)] = {
-        guesses: data.guesses.filter(g => g !== null).map(g => g?.id || -1)
+        guesses: data.guesses.filter(g => g !== null).map(g => g?.id)
     };
 
     return localData;

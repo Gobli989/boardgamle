@@ -60,7 +60,7 @@ export function parseGamePage(content: string, originalGame?: Game) {
         id: json.item.id,
         rank: parseInt(json.item.rankinfo.find((r: any) => r.rankobjectid === 1).rank),
         name: json.item.name,
-        year: json.item.yearpublished,
+        year: parseInt(json.item.yearpublished),
         geekRating: parseFloat(json.item.stats.average),
         url: json.item.canonical_link,
         imageUrl: json.item.images.square200,

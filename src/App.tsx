@@ -5,7 +5,7 @@ import InfoOverlay from "./components/infooverlay/InfoOverlay";
 import { Game } from "./types/Game";
 import CorrectGameEffect from "./components/correctgameeffect/CorrectGameEffect";
 import { Toolbar } from "./components/toolbar/Toolbar";
-import { loadGames, selectTodaysGame } from "./utils/GameManager";
+import { selectTodaysGame } from "./utils/GameManager";
 import { LocalGameData } from "./types/LocalGameData";
 import { Guesses } from "./components/game/guesses/Guesses";
 import { renderCanvas } from "./utils/CanvasManager";
@@ -13,6 +13,8 @@ import BugReportOverlay from "./components/bug_report_overlay/BugReportOverlay";
 import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
 import { CURRENT_VERSION, getDayData, loadLocalData, saveLocalData, setDayData } from "./utils/DataManager";
 import ChangelogOverlay from "./components/changelogoverlay/ChangelogOverlay";
+
+import gameList from "./assets/all_games.json";
 
 export default function App() {
 
@@ -24,7 +26,13 @@ export default function App() {
     games: [],
     localData: null,
     imageSize: 5,
-    guesses: new Array(5).fill(null),
+    guesses: [
+      gameList[12],
+      null,
+      null,
+      null,
+      null,
+    ],
     correctGame: null,
     overlayShown: {
       info: false,
@@ -51,36 +59,34 @@ export default function App() {
   // Load games.json and local data
   useEffect(() => {
 
-    loadGames().then((games) => {
+    // Pick a random game
+    const todaysGame = selectTodaysGame(gameList);
 
-      // Pick a random game
-      selectTodaysGame(games).then((game) => {
-        const _localData = loadLocalData();
-        const _guesses = getDayData(new Date(), _localData)?.guesses || [];
-        const _showChangelog = _localData.lastCheckedVersion < CURRENT_VERSION;
-        _localData.lastCheckedVersion = CURRENT_VERSION;
+    const _localData = loadLocalData();
+    const _guesses = getDayData(new Date(), _localData)?.guesses || [];
+    const _showChangelog = _localData.lastCheckedVersion < CURRENT_VERSION;
+    _localData.lastCheckedVersion = CURRENT_VERSION;
 
-        setLocalGameData({
-          ...localGameData,
-          localData: _localData,
-          games: games,
-          correctGame: game,
-          overlayShown: {
-            ...localGameData.overlayShown,
-            changelog: _showChangelog,
-          },
-          guesses: new Array(5).fill(null).map((_, i) => {
-            if (_guesses.length > i) {
-              return games.find(g => g.id === _guesses[i]) || null;
-            }
-            return null;
-          }),
-        });
+    console.log('Correct game:', todaysGame);
 
-        saveLocalData(_localData);
-      });
-
+    setLocalGameData({
+      ...localGameData,
+      localData: _localData,
+      games: gameList,
+      correctGame: todaysGame,
+      overlayShown: {
+        ...localGameData.overlayShown,
+        changelog: _showChangelog,
+      },
+      // guesses: new Array(5).fill(null).map((_, i) => {
+      //   if (_guesses.length > i) {
+      //     return gameList.find(g => g.id === _guesses[i]) || null;
+      //   }
+      //   return null;
+      // }),
     });
+
+    saveLocalData(_localData);
 
   }, []);
 
@@ -104,17 +110,22 @@ export default function App() {
     <>
 
       {/* Found correct game effect */}
-      <CorrectGameEffect play={shouldPlayCorrectGameEffect} setPlay={setShouldPlayCorrectGameEffect} />
+      <CorrectGameEffect
+        play={shouldPlayCorrectGameEffect}
+        setPlay={setShouldPlayCorrectGameEffect}
+      />
 
-      <ChangelogOverlay shown={localGameData.overlayShown.changelog} setShown={() => {
-        setLocalGameData({
-          ...localGameData,
-          overlayShown: {
-            ...localGameData.overlayShown,
-            changelog: !localGameData.overlayShown.changelog
-          }
-        })
-      }} />
+      <ChangelogOverlay
+        shown={localGameData.overlayShown.changelog}
+        setShown={() => {
+          setLocalGameData({
+            ...localGameData,
+            overlayShown: {
+              ...localGameData.overlayShown,
+              changelog: !localGameData.overlayShown.changelog
+            }
+          })
+        }} />
 
       {/* INFO overlay */}
       <InfoOverlay
@@ -184,7 +195,7 @@ export default function App() {
 
           {
             (localGameData.guesses.includes(localGameData.correctGame!) || !localGameData.guesses.includes(null)) ?
-              <img src={localGameData.correctGame?.imageURL} className='image-canvas image-correct' /> :
+              <img src={localGameData.correctGame?.imageUrl} className='image-canvas image-correct' /> :
               <canvas className="image-canvas" ref={canvasRef} />
           }
 
@@ -197,11 +208,12 @@ export default function App() {
               <Select
                 className="react-select-container"
                 classNamePrefix='react-select'
-                options={localGameData.games.filter(g => {
-                  return localGameData.guesses.findIndex(g2 => g2?.id === g.id) === -1;
-                }).map(g => {
-                  return { value: g.id, label: `${g.name} (${g.year})` };
-                })}
+                options={
+                  localGameData.games
+                  .filter(g => localGameData.guesses.findIndex(g2 => g2?.id === g.id) === -1)
+                  .map(g => ({ value: g.id, label: g.name }))
+                  .sort((a, b) => a.label.localeCompare(b.label))
+                }
                 onChange={(sel) => {
                   if (!sel) return;
                   const game = localGameData.games.find(g => g.id === sel.value);

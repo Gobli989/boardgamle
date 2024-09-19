@@ -84,3 +84,7 @@ export function getMonthName(month: number): string {
   }
   return "Invalid";
 }
+
+export function trunc(value: number, decimals: number = 2): number {
+  return parseFloat(value.toFixed(decimals));
+}
