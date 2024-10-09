@@ -7,7 +7,8 @@ import Select from "react-select/base";
 import { renderCanvas } from "../utils/CanvasManager";
 import { selectTodaysGame } from "../utils/GameManager";
 
-const correctGame = selectTodaysGame(all_games);
+// const correctGame = selectTodaysGame(all_games);
+const correctGame = all_games[2];
 
 export default function App2() {
 
@@ -36,9 +37,9 @@ export default function App2() {
             {/* Game image canvas */}
             {
                 foundCorrectGame() ? (
-                    <img src={correctGame.imageUrl} className="mx-auto my-5 w-96 h-96 outline outline-1 outline-offset-3 outline-white rounded-lg" />
+                    <img src={correctGame.imageUrl} className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-lg" />
                 ) : (
-                    <canvas className="mx-auto my-5 w-96 h-96 outline outline-1 outline-offset-3 outline-white rounded-lg image-pixelated" ref={canvasRef} />
+                    <canvas className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-lg image-pixelated" ref={canvasRef} />
                 )
             }
 

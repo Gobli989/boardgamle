@@ -14,20 +14,16 @@ export function renderCanvas(game: Game, imageSize: number, canvasRef: React.Mut
 
     if (!ctx) return;
 
-    const WIDTH = imageSize;
-    const HEIGHT = imageSize;
-
-    canvas.width = WIDTH;
-
     const image = new Image();
     image.src = game.imageUrl;
 
     image.onload = () => {
         const imgWidth = image.width;
         const imgHeight = image.height;
-        const ratio = Math.max(WIDTH / imgWidth, HEIGHT / imgHeight);
+        const ratio = imgWidth / imgHeight;
 
-        canvas.height = imgHeight * ratio;
+        canvas.width = imgWidth;
+        canvas.height = imgHeight;
 
         // Draw the image on the canvas
         ctx.drawImage(
@@ -38,8 +34,8 @@ export function renderCanvas(game: Game, imageSize: number, canvasRef: React.Mut
             imgHeight,
             0,
             0,
-            imgWidth * ratio,
-            imgHeight * ratio,
+            imgWidth,
+            imgHeight,
         );
     };
 }
