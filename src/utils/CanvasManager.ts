@@ -1,4 +1,4 @@
-import { LocalGameData } from "../types/LocalGameData";
+import { Game } from "../types/Game";
 
 /**
  * Renders the canvas with the correct image and sizes
@@ -6,21 +6,21 @@ import { LocalGameData } from "../types/LocalGameData";
  * @param localGameData 
  * @param canvasRef 
  */
-export function renderCanvas(localGameData: LocalGameData, canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) {
-    if (!localGameData.correctGame || !canvasRef.current) return;
+export function renderCanvas(game: Game, imageSize: number, canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) {
+    if (!canvasRef.current) return;
 
     const canvas = canvasRef.current as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
 
     if (!ctx) return;
 
-    const WIDTH = localGameData.imageSize;
-    const HEIGHT = localGameData.imageSize;
+    const WIDTH = imageSize;
+    const HEIGHT = imageSize;
 
     canvas.width = WIDTH;
 
     const image = new Image();
-    image.src = localGameData.correctGame.imageURL;
+    image.src = game.imageUrl;
 
     image.onload = () => {
         const imgWidth = image.width;

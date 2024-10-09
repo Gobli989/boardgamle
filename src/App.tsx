@@ -101,7 +101,7 @@ export default function App() {
 
   // Rendering the pixelated image while keeping the aspect ratio
   useEffect(() => {
-    renderCanvas(localGameData, canvasRef);
+    // renderCanvas(localGameData, canvasRef);
   }, [localGameData, canvasRef]);
 
   if (!localGameData.games) return (<p>Loading...</p>);

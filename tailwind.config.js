@@ -16,7 +16,7 @@ export default {
       backgroundSize: {
         "50%": "50%",
         "75%": "75%",
-      }
+      },
     },
   },
   plugins: [],
