@@ -31,11 +31,11 @@ export function renderCanvas(game: Game, imageSize: number, canvasRef: React.Mut
             0,
             0,
             imgWidth,
-            imgHeight,
+            imgWidth *ratio,
             0,
             0,
             imgWidth,
-            imgHeight,
+            imgWidth * ratio,
         );
     };
 }

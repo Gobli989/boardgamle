@@ -63,7 +63,7 @@ export function parseGamePage(content: string, originalGame?: Game) {
         year: parseInt(json.item.yearpublished),
         geekRating: parseFloat(json.item.stats.average),
         url: json.item.canonical_link,
-        imageUrl: json.item.images.square200,
+        imageUrl: json.item.images.original,
         complexityRating: parseFloat(json.item.polls.boardgameweight.averageweight),
         minPlayers: parseInt(json.item.minplayers),
         maxPlayers: parseInt(json.item.maxplayers),

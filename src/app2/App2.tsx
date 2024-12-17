@@ -7,7 +7,7 @@ import Select from "react-select/base";
 import { renderCanvas } from "../utils/CanvasManager";
 import { selectTodaysGame } from "../utils/GameManager";
 
-// const correctGame = selectTodaysGame(all_games);
+// TODO: const correctGame = selectTodaysGame(all_games);
 const correctGame = all_games[2];
 
 export default function App2() {
@@ -17,8 +17,6 @@ export default function App2() {
     const [guesses, setGuesses] = useState<Game[]>(new Array(5).fill(null));
 
     useEffect(() => {
-        console.log("Rendering");
-
         const guessAmount = guesses.findIndex(e => e === null);
 
         if (guessAmount === -1) {
