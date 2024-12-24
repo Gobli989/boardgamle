@@ -7,8 +7,7 @@ import Select from "react-select/base";
 import { renderCanvas } from "../utils/CanvasManager";
 import { selectTodaysGame } from "../utils/GameManager";
 
-// TODO: const correctGame = selectTodaysGame(all_games);
-const correctGame = all_games[2];
+const correctGame = selectTodaysGame(all_games);
 
 export default function App2() {
 
@@ -34,6 +33,7 @@ export default function App2() {
 
             {/* Game image canvas */}
             {
+                // TODO: Fix that the image clips on mobile screens below 800 pixels
                 foundCorrectGame() ? (
                     <img src={correctGame.imageUrl} className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-lg" />
                 ) : (
@@ -45,7 +45,7 @@ export default function App2() {
 
             {
                 !foundCorrectGame() ? (
-                    <div className="flex flex-row gap-5 px-10">
+                    <div className="flex flex-col md:flex-row gap-5 px-10">
                         <div className="flex-1">
                             <StateManagedSelect<Game>
                                 className="react-select-container"
@@ -57,7 +57,7 @@ export default function App2() {
                                 ref={selectRef}
                             />
                         </div>
-                        <button className="w-32 bg-lime-500 text-white rounded-lg font-semibold" onClick={() => {
+                        <button className="w-full h-10 md:h-full md:w-32 bg-lime-500 text-white rounded-lg font-semibold" onClick={() => {
                             // Gets the current selection from the <StateManagedSelect> element.
                             const curr = selectRef.current;
 
@@ -101,7 +101,7 @@ export default function App2() {
 
             {/* Guesses */}
             <div className="mt-5 px-10">
-                <div className="flex flex-row px-5">
+                <div className="hidden md:flex flex-row px-5">
                     <p className="flex-1">Name</p>
                     <p className="block w-32 text-center">Rank</p>
                     <p className="block w-32 text-center">Year</p>
