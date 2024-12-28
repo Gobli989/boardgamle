@@ -8,10 +8,10 @@ import { Toolbar } from "./components/toolbar/Toolbar";
 import { selectTodaysGame } from "./utils/GameManager";
 import { LocalGameData } from "./types/LocalGameData";
 import { Guesses } from "./components/game/guesses/Guesses";
-import { renderCanvas } from "./utils/CanvasManager";
+// import { renderCanvas } from "./utils/CanvasManager";
 import BugReportOverlay from "./components/bug_report_overlay/BugReportOverlay";
 import FeedbackOverlay from "./components/feedback_overlay/FeedbackOverlay";
-import { CURRENT_VERSION, getDayData, loadLocalData, saveLocalData, setDayData } from "./utils/DataManager";
+import { CURRENT_VERSION, loadLocalData, saveLocalData, setDayData } from "./utils/DataManager";
 import ChangelogOverlay from "./components/changelogoverlay/ChangelogOverlay";
 
 import gameList from "./assets/all_games.json";
@@ -63,7 +63,7 @@ export default function App() {
     const todaysGame = selectTodaysGame(gameList);
 
     const _localData = loadLocalData();
-    const _guesses = getDayData(new Date(), _localData)?.guesses || [];
+    // const _guesses = getDayData(new Date(), _localData)?.guesses || [];
     const _showChangelog = _localData.lastCheckedVersion < CURRENT_VERSION;
     _localData.lastCheckedVersion = CURRENT_VERSION;
 
