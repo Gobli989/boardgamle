@@ -35,3 +35,26 @@
     90% { color: hsl(324deg, 100%, 50%); }
     100% { color: hsl(360deg, 100%, 50%); }
 }
+
+/* React select overrides */
+/* .react-select__control {
+    background-color: transparent !important;
+    border-radius: 12px !important;
+}
+
+.react-select__single-value {
+    color: white !important;
+}
+
+body.dark .react-select__menu {
+
+}
+
+.react-select__menu {
+    background-color: #292524 !important;
+    color: white;
+}
+
+.abc {
+    background-color: red;
+} */
