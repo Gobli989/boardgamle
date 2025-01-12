@@ -1,10 +1,12 @@
+// TODO: Create a seeded random number generator which does not repeat the games for previous games.
+
 /**
  * Custom seedable random number generator
  * 
  * @param seed seed for the random number generator
  * @returns {number} random number between 0 and 1
  */
-export function seededRandom(seed: number): number {
+export function seededRandom(seed?: number): number {
   const m = 1236967814;
   const a = 7618742178;
   const c = 9873214987;

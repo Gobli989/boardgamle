@@ -1,6 +1,6 @@
 import './CorrectGameEffect.css';
 
-import { confetti } from '@tsparticles/confetti';
+// import { confetti } from '@tsparticles/confetti';
 import { useEffect, useRef } from 'react';
 
 export default function CorrectGameEffect(props: {play: boolean, setPlay: React.Dispatch<React.SetStateAction<boolean>>}) {
@@ -15,14 +15,14 @@ export default function CorrectGameEffect(props: {play: boolean, setPlay: React.
         for (let i = 0; i < 5; i++) {
     
             setTimeout(() => {
-                confetti("tsparticles", {
-                    particleCount: 100,
-                    spread: 360,
-                    gravity: 0,
-                    decay: 0.94,
-                    startVelocity: 30,
-                    origin: { y: Math.random(), x: Math.random() },
-                });
+                // confetti("tsparticles", {
+                //     particleCount: 100,
+                //     spread: 360,
+                //     gravity: 0,
+                //     decay: 0.94,
+                //     startVelocity: 30,
+                //     origin: { y: Math.random(), x: Math.random() },
+                // });
             }, Math.random() * 1000);
 
         }

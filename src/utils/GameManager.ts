@@ -1,3 +1,4 @@
+import { dateToNumber } from "../app2/utils/SaveManager";
 import { Game } from "../types/Game";
 import { seededRandom } from "./Utils";
 
@@ -8,10 +9,15 @@ import { seededRandom } from "./Utils";
  * @returns Promise<Game> A random game from the array
  */
 export function selectTodaysGame(games: Game[]): Game {
+    const now = new Date();
+    
+    return selectCorrectGameForDate(games, dateToNumber(now));
+}
+
+export function selectCorrectGameForDate(games: Game[], date: number) {
     if (games.length === 0) throw new Error("No games to select from");
 
-    const now = new Date();
-    const todays_seed = seededRandom(parseInt("" + now.getFullYear() + now.getMonth() + now.getDate()));
+    const todays_seed = seededRandom(date);
     const game = games[Math.floor(todays_seed * games.length)];
 
     return game;

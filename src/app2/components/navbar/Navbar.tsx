@@ -1,11 +1,12 @@
 import "./NavbarItem.css";
 
-import { BugIcon, ChatIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../icons/Icons";
+import { BugIcon, CalendarIcon, ChatIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../../icons/Icons";
 import { useReducer, useState } from "react";
-import { useOverlay } from "./components/OverlayContext";
-import InfoOverlay from "./components/overlays/InfoOverlay";
-import BugReportOverlay from "./components/overlays/BugReportOverlay";
-import FeedbackOverlay from "./components/overlays/FeebackOverlay";
+import { useOverlay } from "../OverlayContext";
+import InfoOverlay from "../overlays/InfoOverlay";
+import BugReportOverlay from "../overlays/BugReportOverlay";
+import FeedbackOverlay from "../overlays/FeebackOverlay";
+import CalendarOverlay from "../overlays/CalendarOverlay";
 
 export default function Navbar() {
 
@@ -53,10 +54,15 @@ export default function Navbar() {
                 }}
             />
 
-            {/* <NavbarItem
-                icon={<CalendarIcon className="fill-black" />}
+            <NavbarItem
+                icon={<CalendarIcon className="fill-black dark:fill-white" />}
                 name="Previous days"
-            /> */}
+                onClick={() => overlay.showAlert({
+                    id: "calendar_overlay",
+                    showCloseButton: true,
+                    content: <CalendarOverlay />
+                })}
+            />
 
             <NavbarItem
                 icon={<BugIcon className="fill-black dark:fill-white" />}
@@ -87,7 +93,7 @@ function NavbarItem(props: {
     name?: string,
     onClick?: () => void,
 }) {
-    return <button className="w-full md:w-10 h-10 dark:text-white hover:bg-neutral-200 dark:hover:bg-stone-600 rounded-xl transition-colors navbar-item after:!content-[attr(data-name)] flex flex-row justify-start md:justify-center items-center gap-5" data-name={props.name} onClick={props.onClick}>
+    return <button className="w-full md:w-10 h-10 dark:text-white hover:bg-neutral-200 dark:hover:bg-stone-600 rounded-xl transition-colors navbar-item after:dark:bg-stone-600 after:!content-[attr(data-name)] flex flex-row justify-start md:justify-center items-center gap-5" data-name={props.name} onClick={props.onClick}>
         {props.icon}
 
         <span className="inline md:hidden">

@@ -5,19 +5,53 @@ import { Game } from "../types/Game";
 import StateManagedSelect from 'react-select';
 import Select from "react-select/base";
 import { renderCanvas } from "../utils/CanvasManager";
-import { selectTodaysGame } from "../utils/GameManager";
-import Navbar from "./Navbar";
+import Navbar from "./components/navbar/Navbar";
 import { PlayersIcon, TimeIcon } from "../icons/Icons";
-
-const correctGame = selectTodaysGame(all_games);
+import { dateToNumber, getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
+import { selectCorrectGameForDate } from "../utils/GameManager";
+import { useSearchParams } from "react-router-dom";
 
 export default function App2() {
 
+    const [searchParams] = useSearchParams();
+
+    const [today, setToday] = useState<number>(getDayNumber());
+    const [correctGame, setCorrectGame] = useState<Game>();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const selectRef = useRef<Select<Game>>(null);
     const [guesses, setGuesses] = useState<Game[]>(new Array(5).fill(null));
 
     useEffect(() => {
+        const dateNum = getDayNumber();
+
+        const dayData = getGameDataFromLocalStorage(dateNum);
+
+        if (dayData === null) {
+            // No game data found, creating an empty one
+            setCorrectGame(
+                selectCorrectGameForDate(all_games, dateNum)
+            );
+
+            return;
+        }
+
+        setToday(dateNum);
+        setCorrectGame(dayData.correctGame);
+        setGuesses(dayData.guesses);
+
+    }, []);
+
+    useEffect(() => {
+
+        if (!correctGame) return;
+
+        // Saving the game
+        saveGameToLocalStorage(
+            today,
+            correctGame,
+            guesses
+        );
+
         const guessAmount = guesses.findIndex(e => e === null);
 
         if (guessAmount === -1) {
@@ -27,7 +61,8 @@ export default function App2() {
         }
 
         renderCanvas(correctGame, 5 + guessAmount * 5, canvasRef);
-    }, [canvasRef, guesses]);
+
+    }, [canvasRef, guesses, correctGame]);
 
     return <div className="min-w-full min-h-full dark:bg-stone-900">
         <Navbar />
@@ -39,43 +74,42 @@ export default function App2() {
             {/* Game image canvas */}
             {
                 foundCorrectGame() ? (
-                    <img src={correctGame.imageUrl} className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-xl" />
+                    <img src={correctGame!.imageUrl} className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-xl" />
                 ) : (
-                    <div className="mx-auto px-10 my-5 max-h-96 max-w-96">
-                        <canvas className="w-full outline outline-1 outline-offset-3 outline-white dark:outline-stone-600 rounded-xl image-pixelated" ref={canvasRef} />
+                    <div className="px-10 my-5 h-96">
+                        <canvas className="mx-auto h-full outline outline-1 outline-offset-3 outline-white dark:outline-stone-600 rounded-xl image-pixelated" ref={canvasRef} />
                     </div>
                 )
             }
 
             {/* Selector */}
-
             {
                 foundCorrectGame() ? (
                     <div className="md:max-w-screen-sm mx-12 md:mx-auto flex flex-col md:flex-row gap-5">
                         <h1 className="text-3xl font-bold dark:text-white">
-                            <span className="font-normal me-3 border-r-2 border-black dark:border-white">#{correctGame.rank} </span>
-                            <a href={correctGame.url} target="_blank" className="underline underline-offset-4">{correctGame.name}</a>
-                            <span className="text-sm font-normal"> ({correctGame.year})</span>
+                            <span className="font-normal me-3 border-r-2 border-black dark:border-white">#{correctGame!.rank} </span>
+                            <a href={correctGame!.url} target="_blank" className="underline underline-offset-4">{correctGame!.name}</a>
+                            <span className="text-sm font-normal"> ({correctGame!.year})</span>
                         </h1>
 
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-24">
                             <p className="text-sm dark:text-white leading-none">Players:</p>
                             <PlayersIcon className="fill-black dark:fill-white inline-block" />
                             <p className="inline dark:text-white text-xl ms-2">
-                                {correctGame.minPlayers} - {correctGame.maxPlayers}
+                                {correctGame!.minPlayers} - {correctGame!.maxPlayers}
                             </p>
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-40">
                             <p className="text-sm dark:text-white leading-none">Playtime:</p>
                             <TimeIcon className="fill-black dark:fill-white inline-block" />
                             <p className="inline dark:text-white text-xl ms-2">
-                                {correctGame.minPlaytime} - {correctGame.maxPlaytime} min
+                                {correctGame!.minPlaytime} - {correctGame!.maxPlaytime} min
                             </p>
                         </div>
 
                     </div>
-                ) :(
+                ) : (
                     <div className="flex flex-col md:flex-row gap-5 px-10">
                         <div className="flex-1">
                             <StateManagedSelect<Game>
@@ -83,7 +117,7 @@ export default function App2() {
                                 classNamePrefix='react-select'
                                 classNames={{
                                     menu: () => "dark:bg-stone-800",
-                                    noOptionsMessage: () => "dark:bg-stone-800 dark:text-white" ,
+                                    noOptionsMessage: () => "dark:bg-stone-800 dark:text-white",
                                     input: () => "dark:text-white",
                                     control: () => "dark:bg-stone-800 !rounded-xl dark:border-stone-600 ouline-none",
                                     singleValue: () => "dark:text-white",
@@ -137,6 +171,8 @@ export default function App2() {
     </div>;
 
     function foundCorrectGame() {
+        if (!correctGame) return false;
+
         return guesses.findIndex(e => e && e.id === correctGame.id) !== -1 || guesses.findIndex(e => !e) === -1;
     }
 
@@ -182,6 +218,17 @@ export default function App2() {
         setGuesses(arrayCopy);
 
         curr.setValue(null, "deselect-option");
+    }
+
+    function getDayNumber() {
+        const date = searchParams.get("date");
+        let dateNum = dateToNumber(new Date());
+
+        if (date) {
+            dateNum = parseInt(date);
+        }
+
+        return dateNum;
     }
 
 }

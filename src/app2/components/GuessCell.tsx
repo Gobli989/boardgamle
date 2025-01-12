@@ -1,9 +1,9 @@
 import { Game } from "../../types/Game";
 
-export default function GuessCell(props: { game?: Game, correctGame: Game }) {
+export default function GuessCell(props: { game?: Game, correctGame?: Game }) {
 
     // If the game is left empty, create an empty slot
-    if (!props.game) {
+    if (!props.game || !props.correctGame) {
         return <div className="h-24 md:h-10 w-full outline outline-1 outline-neutral-300 dark:outline-neutral-600 rounded-xl mt-3" />;
     }
 
