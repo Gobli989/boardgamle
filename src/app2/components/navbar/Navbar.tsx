@@ -93,7 +93,12 @@ function NavbarItem(props: {
     name?: string,
     onClick?: () => void,
 }) {
-    return <button className="w-full md:w-10 h-10 dark:text-white hover:bg-neutral-200 dark:hover:bg-stone-600 rounded-xl transition-colors navbar-item after:dark:bg-stone-600 after:!content-[attr(data-name)] flex flex-row justify-start md:justify-center items-center gap-5" data-name={props.name} onClick={props.onClick}>
+    return <button
+        className="w-full md:w-10 h-10 dark:text-white hover:bg-neutral-200 dark:hover:bg-stone-600 rounded-xl transition-colors navbar-item after:dark:bg-stone-600 after:!content-[attr(data-name)] flex flex-row justify-start md:justify-center items-center gap-5"
+        data-name={props.name}
+        onClick={props.onClick}
+        aria-label={props.name}
+        >
         {props.icon}
 
         <span className="inline md:hidden">

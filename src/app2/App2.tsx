@@ -10,6 +10,7 @@ import { PlayersIcon, TimeIcon } from "../icons/Icons";
 import { dateToNumber, getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
 import { selectCorrectGameForDate } from "../utils/GameManager";
 import { useSearchParams } from "react-router-dom";
+import { guessedCorrectGame } from "./utils/GameUtils";
 
 export default function App2() {
 
@@ -76,7 +77,7 @@ export default function App2() {
                 foundCorrectGame() ? (
                     <img src={correctGame!.imageUrl} className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-xl" />
                 ) : (
-                    <div className="px-10 my-5 h-96">
+                    <div className="my-5 h-96">
                         <canvas className="mx-auto h-full outline outline-1 outline-offset-3 outline-white dark:outline-stone-600 rounded-xl image-pixelated" ref={canvasRef} />
                     </div>
                 )
@@ -110,7 +111,7 @@ export default function App2() {
 
                     </div>
                 ) : (
-                    <div className="flex flex-col md:flex-row gap-5 px-10">
+                    <div className="flex flex-col md:flex-row gap-5 ps-10 md:ps-16 pe-10">
                         <div className="flex-1">
                             <StateManagedSelect<Game>
                                 className="react-select-container"
@@ -128,6 +129,7 @@ export default function App2() {
                                     .map(g => ({ ...g, label: g.name, value: g.id, className: "abc" }))
                                     .sort((a, b) => a.name.localeCompare(b.name))}
                                 ref={selectRef}
+                                aria-label="Select game"
                             />
                         </div>
                         <button className="w-full h-10 md:h-auto md:w-32 bg-lime-500 text-white dark:text-black rounded-lg font-semibold" onClick={guessButtonClick}>Guess</button>
@@ -136,7 +138,7 @@ export default function App2() {
             }
 
             {/* Guesses */}
-            <div className="mt-5 px-10">
+            <div className="mt-5 ps-10 md:ps-16 pe-10">
                 <div className="hidden md:flex flex-row px-5 dark:text-stone-400">
                     <p className="flex-1">Name</p>
                     <p className="block w-32 text-center">Rank</p>
@@ -173,7 +175,7 @@ export default function App2() {
     function foundCorrectGame() {
         if (!correctGame) return false;
 
-        return guesses.findIndex(e => e && e.id === correctGame.id) !== -1 || guesses.findIndex(e => !e) === -1;
+        return guessedCorrectGame(guesses, correctGame);
     }
 
     /**

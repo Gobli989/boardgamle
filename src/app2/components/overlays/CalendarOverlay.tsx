@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { LeftChevronIcon, RightChevronIcon } from "../../../icons/Icons";
-import { dateToNumber, getGameDataFromLocalStorage, numberToDate, SaveDayType } from "../../utils/SaveManager";
+import { dateToNumber, getGameDataFromLocalStorage, numberToDate } from "../../utils/SaveManager";
+import { finishedDayOnDay, guessCountToCorrectGameOnDay, guessedCorrectGameOnDay } from "../../utils/GameUtils";
 
 const now = new Date();
 
@@ -39,7 +40,7 @@ export default function CalendarOverlay() {
 
                     if (weekIndex === 0) {
                         // First row, show day names
-                        return <div className="flex flex-row w-full">
+                        return <div className="flex flex-row w-full" key={"lf-" + weekIndex}>
                             {
                                 a(7).map((_, weekdayIndex) => (
                                     <div className="flex-1 text-center" key={"l-" + weekdayIndex}>
@@ -50,7 +51,7 @@ export default function CalendarOverlay() {
                         </div>;
                     }
 
-                    return <div className="flex flex-row w-full">
+                    return <div className="flex flex-row w-full" key={"la-" + weekIndex}>
                         {
                             a(7).map((_, weekdayIndex) => {
 
@@ -58,16 +59,38 @@ export default function CalendarOverlay() {
 
                                 const date = new Date(year, month, dayIndex);
                                 const dayData = getGameDataFromLocalStorage(dateToNumber(date));
-                                const completion = getCompletion(dayData);
+                                // const completion = getCompletion(dayData);
 
-                                let bgColor = "";
-                                switch (completion) {
-                                    case Completion.FOUND: bgColor = "bg-lime-500 !text-black"; break;
-                                    case Completion.MORE_GUESSES: bgColor = "bg-yellow-800"; break;
-                                    case Completion.OUT_OF_GUESSES: bgColor = "bg-stone-700"; break;
+                                let guessColor = "bg-stone-700";
+
+                                if (dayData) {
+
+                                    if (finishedDayOnDay(dayData)) {
+
+                                        if (guessedCorrectGameOnDay(dayData)) {
+                                            switch (guessCountToCorrectGameOnDay(dayData)) {
+                                                case 0: guessColor = "bg-lime-500"; break;
+                                                case 1: guessColor = "bg-lime-600"; break;
+                                                case 2: guessColor = "bg-lime-700"; break;
+                                                case 3: guessColor = "bg-lime-800"; break;
+                                                case 4: guessColor = "bg-lime-900"; break;
+                                            }
+                                        } else {
+                                            guessColor = "bg-yellow-800";
+                                        }
+                                    } else {
+                                        guessColor = "bg-stone-500";
+                                    }
                                 }
 
-                                return <button className={`flex-1 flex flex-row items-center justify-center h-12 m-1 rounded-md border border-stone-600 text-black dark:text-white ${date.getMonth() !== month ? "opacity-50" : ""} ${sameDay(now, date) ? "border-lime-500 border-2" : ""} ${bgColor}`}
+                                // let bgColor = "";
+                                // switch (completion) {
+                                //     case Completion.FOUND: bgColor = "bg-lime-500 !text-black"; break;
+                                //     case Completion.MORE_GUESSES: bgColor = "bg-yellow-800"; break;
+                                //     case Completion.OUT_OF_GUESSES: bgColor = "bg-stone-700"; break;
+                                // }
+
+                                return <button className={`flex-1 flex flex-row items-center justify-center h-12 m-1 rounded-md border border-stone-600 text-black dark:text-white ${date.getMonth() !== month ? "opacity-50 pointer-events-none" : ""} ${sameDay(now, date) ? "border-lime-500 border-2" : ""} ${guessColor}`}
                                     onClick={() => setSelectedDay(dateToNumber(date))}
                                     key={"i-" + dayIndex}
                                 >
@@ -120,21 +143,21 @@ export default function CalendarOverlay() {
             date1.getDate() === date2.getDate();
     }
 
-    function getCompletion(saveDay: SaveDayType | null): Completion {
-        if (!saveDay) return Completion.NOT_TRIED;
+    // function getCompletion(saveDay: SaveDayType | null): Completion {
+    //     if (!saveDay) return Completion.NOT_TRIED;
 
-        const foundCorrectGame = saveDay.guesses.findIndex((game) => game !== null && game.id === saveDay.correctGame.id) !== -1;
+    //     const foundCorrectGame = saveDay.guesses.findIndex((game) => game !== null && game.id === saveDay.correctGame.id) !== -1;
 
-        if (foundCorrectGame) return Completion.FOUND;
+    //     if (foundCorrectGame) return Completion.FOUND;
 
-        // Correct game was not found, are the guesses exhausted or can new guesses made?
+    //     // Correct game was not found, are the guesses exhausted or can new guesses made?
 
-        const allGuesses = saveDay.guesses.findIndex((game) => game === null) !== -1;
+    //     const allGuesses = saveDay.guesses.findIndex((game) => game === null) !== -1;
 
-        if (allGuesses) return Completion.OUT_OF_GUESSES;
+    //     if (allGuesses) return Completion.OUT_OF_GUESSES;
 
-        return Completion.MORE_GUESSES;
-    }
+    //     return Completion.MORE_GUESSES;
+    // }
 }
 
 function a(length: number): null[] {
@@ -166,12 +189,12 @@ const monthNames = [
     "December",
 ]
 
-enum Completion {
-    FOUND,
-    OUT_OF_GUESSES,
-    MORE_GUESSES,
-    NOT_TRIED
-}
+// enum Completion {
+//     FOUND,
+//     OUT_OF_GUESSES,
+//     MORE_GUESSES,
+//     NOT_TRIED
+// }
 
 function SelectedDayElement(props: { selectedDay?: number }) {
     if (!props.selectedDay) return null;
@@ -191,7 +214,14 @@ function SelectedDayElement(props: { selectedDay?: number }) {
                 <p className="text-sm leading-none">{date.getFullYear()}</p>
                 <p className="text-lg leading-none font-semibold">{monthNames[date.getMonth() - 1]} {date.getDate()}.</p>
 
-                <div className="flex-1" />
+                <div className="flex-1 w-full my-2">
+                    {
+                        finishedDayOnDay(dayData) &&
+                        <img className="max-h-32 max-w-32 mx-auto" src={dayData.correctGame.imageUrl} />
+                    }
+                </div>
+
+                {/* <div className="flex-1" /> */}
 
                 <a className="w-full h-10 bg-lime-500 text-black font-semibold rounded-lg flex items-center justify-center" href={`/?date=${props.selectedDay}`}>Play!</a>
 
@@ -201,19 +231,19 @@ function SelectedDayElement(props: { selectedDay?: number }) {
 
                 {
                     dayData &&
-                    dayData.guesses.map((game) => {
+                    dayData.guesses.map((game, i) => {
 
                         if (game === null) {
-                            return <div className="w-full rounded-lg border h-8 border-stone-500 py-1 mt-2" />;
+                            return <div className="w-full rounded-lg border h-8 border-stone-500 py-1 mt-2" key={"ddg-" + i} />;
                         }
 
                         if (game.id === dayData.correctGame.id) {
-                            return <div className="w-full h-8 flex items-center rounded-lg bg-lime-500 text-black px-2 mt-2">
+                            return <div className="w-full h-8 flex items-center rounded-lg bg-lime-500 text-black px-2 mt-2" key={"ddg-" + i}>
                                 <span className="text-xs text-nowrap text-ellipsis overflow-hidden">{game.name}</span>
                             </div>;
                         }
 
-                        return <div className="w-full h-8 flex items-center rounded-lg border border-stone-500 px-2 mt-2">
+                        return <div className="w-full h-8 flex items-center rounded-lg border border-stone-500 px-2 mt-2" key={"ddg-" + i}>
                             <span className="text-xs text-nowrap text-ellipsis overflow-hidden">{game.name}</span>
                         </div>;
                     })
