@@ -10,7 +10,7 @@ import { PlayersIcon, TimeIcon } from "../icons/Icons";
 import { dateToNumber, getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
 import { selectCorrectGameForDate } from "../utils/GameManager";
 import { useSearchParams } from "react-router-dom";
-import { guessedCorrectGame } from "./utils/GameUtils";
+import { finishedDay } from "./utils/GameUtils";
 
 export default function App2() {
 
@@ -74,7 +74,7 @@ export default function App2() {
 
             {/* Game image canvas */}
             {
-                foundCorrectGame() ? (
+                finishedDay(guesses, correctGame!) ? (
                     <img src={correctGame!.imageUrl} className="mx-auto my-5 h-96 outline outline-1 outline-offset-3 outline-white rounded-xl" />
                 ) : (
                     <div className="my-5 h-96">
@@ -85,7 +85,7 @@ export default function App2() {
 
             {/* Selector */}
             {
-                foundCorrectGame() ? (
+                finishedDay(guesses, correctGame!) ? (
                     <div className="md:max-w-screen-sm mx-12 md:mx-auto flex flex-col md:flex-row gap-5">
                         <h1 className="text-3xl font-bold dark:text-white">
                             <span className="font-normal me-3 border-r-2 border-black dark:border-white">#{correctGame!.rank} </span>
@@ -171,12 +171,6 @@ export default function App2() {
             </p>
         </footer>
     </div>;
-
-    function foundCorrectGame() {
-        if (!correctGame) return false;
-
-        return guessedCorrectGame(guesses, correctGame);
-    }
 
     /**
      * When the user click on the Guess button, this function runs.
