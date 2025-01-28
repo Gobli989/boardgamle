@@ -7,10 +7,12 @@ import Select from "react-select/base";
 import { renderCanvas } from "../utils/CanvasManager";
 import Navbar from "./components/navbar/Navbar";
 import { PlayersIcon, TimeIcon } from "../icons/Icons";
-import { dateToNumber, getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
+import { getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
 import { selectCorrectGameForDate } from "../utils/GameManager";
 import { useSearchParams } from "react-router-dom";
 import { finishedDay } from "./utils/GameUtils";
+import { dateToNumber } from "./utils/DateUtils";
+import { Temporal } from "@js-temporal/polyfill";
 
 export default function App2() {
 
@@ -218,7 +220,7 @@ export default function App2() {
 
     function getDayNumber() {
         const date = searchParams.get("date");
-        let dateNum = dateToNumber(new Date());
+        let dateNum = dateToNumber(Temporal.Now.plainDateISO());
 
         if (date) {
             dateNum = parseInt(date);

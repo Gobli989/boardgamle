@@ -1,4 +1,5 @@
-import { dateToNumber } from "../app2/utils/SaveManager";
+import { Temporal } from "@js-temporal/polyfill";
+import { dateToNumber } from "../app2/utils/DateUtils";
 import { Game } from "../types/Game";
 import { seededRandom } from "./Utils";
 
@@ -9,7 +10,7 @@ import { seededRandom } from "./Utils";
  * @returns Promise<Game> A random game from the array
  */
 export function selectTodaysGame(games: Game[]): Game {
-    const now = new Date();
+    const now = Temporal.Now.plainDateISO();
     
     return selectCorrectGameForDate(games, dateToNumber(now));
 }
