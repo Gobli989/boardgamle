@@ -4,12 +4,15 @@ import './app2.css';
 import App2 from './App2.tsx';
 import OverlayProvider from './components/OverlayContext.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary.tsx';
 
 const router = createBrowserRouter([
   {
-    path: '/', element: <OverlayProvider>
+    path: '/',
+    element: (<OverlayProvider>
       <App2 />
-    </OverlayProvider>
+    </OverlayProvider>),
+    errorElement: < ErrorBoundary />
   }
 ]);
 

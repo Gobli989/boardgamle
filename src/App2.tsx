@@ -7,10 +7,11 @@ import Select from "react-select/base";
 import { renderCanvas } from "./utils/CanvasManager";
 import Navbar from "./components/navbar/Navbar";
 import { PlayersIcon, TimeIcon } from "./icons/Icons";
-import { dateToNumber, getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
+import { getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
 import { selectCorrectGameForDate } from "./utils/GameManager";
 import { useSearchParams } from "react-router-dom";
 import { finishedDay } from "./utils/GameUtils";
+import { dateToNumber } from "./utils/DateUtils";
 
 export default function App2() {
 
