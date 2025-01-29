@@ -1,4 +1,4 @@
-import { dateToNumber } from "../app2/utils/SaveManager";
+import { dateToNumber } from "../app2/utils/DateUtils";
 import { Game } from "../types/Game";
 import { seededRandom } from "./Utils";
 

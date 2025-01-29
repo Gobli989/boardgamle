@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { LeftChevronIcon, RightChevronIcon } from "../../../icons/Icons";
-import { dateToNumber, getGameDataFromLocalStorage, numberToDate } from "../../utils/SaveManager";
+import { getGameDataFromLocalStorage } from "../../utils/SaveManager";
 import { finishedDayOnDay, guessCountToCorrectGameOnDay, guessedCorrectGameOnDay } from "../../utils/GameUtils";
+import { dateToNumber, getDistanceInDays, isAfter, numberToDate } from "../../utils/DateUtils";
 
 const now = new Date();
 
@@ -11,10 +12,14 @@ export default function CalendarOverlay() {
     const [month, setMonth] = useState<number>(now.getMonth());
     const [selectedDay, setSelectedDay] = useState<number>();
 
-    const dayOffset = new Date(year, month, 0).getDay() - 1;
+    const dayOffset = new Date(year, month, 0).getDay() - 2;
 
     return <div className="w-96">
-        <h1 className="text-3xl font-bold mb-5">Previous days</h1>
+
+        <div className="mb-6">
+            <h1 className="text-3xl font-bold">Previous days</h1>
+            <p className="text-sm text-stone-500">You can replay the past 30 days but cannot play games set in the future.</p>
+        </div>
 
         {/* Month chooser */}
         <div className="flex flex-row mb-5">
@@ -55,11 +60,10 @@ export default function CalendarOverlay() {
                         {
                             a(7).map((_, weekdayIndex) => {
 
-                                const dayIndex = (weekIndex - 1) * 7 + weekdayIndex - dayOffset;
+                                const dayIndex = (weekIndex - 1) * 7 + weekdayIndex - dayOffset - 1;
 
                                 const date = new Date(year, month, dayIndex);
                                 const dayData = getGameDataFromLocalStorage(dateToNumber(date));
-                                // const completion = getCompletion(dayData);
 
                                 let guessColor = "bg-stone-700";
 
@@ -83,15 +87,13 @@ export default function CalendarOverlay() {
                                     }
                                 }
 
-                                // let bgColor = "";
-                                // switch (completion) {
-                                //     case Completion.FOUND: bgColor = "bg-lime-500 !text-black"; break;
-                                //     case Completion.MORE_GUESSES: bgColor = "bg-yellow-800"; break;
-                                //     case Completion.OUT_OF_GUESSES: bgColor = "bg-stone-700"; break;
-                                // }
-
-                                return <button className={`flex-1 flex flex-row items-center justify-center h-12 m-1 rounded-md border border-stone-600 text-black dark:text-white ${date.getMonth() !== month ? "opacity-50 pointer-events-none" : ""} ${sameDay(now, date) ? "border-lime-500 border-2" : ""} ${guessColor}`}
-                                    onClick={() => setSelectedDay(dateToNumber(date))}
+                                // Rendering each day
+                                return <button className={`flex-1 flex flex-row items-center justify-center h-12 m-1 rounded-md border border-stone-600 text-black dark:text-white ${date.getMonth() !== month ? "opacity-50 pointer-events-none" : ""} ${sameDay(now, date) ? "border-lime-500 border-2" : ""} ${guessColor} ${(isAfter(now, date) || getDistanceInDays(now, date) > 30) ? "!bg-neutral-700" : ""}`}
+                                    onClick={() => {
+                                        if (!isAfter(now, date) || getDistanceInDays(now, date) <= 30) {
+                                            setSelectedDay(dateToNumber(date));
+                                        }
+                                    }}
                                     key={"i-" + dayIndex}
                                 >
                                     {date.getDate()}
@@ -142,22 +144,6 @@ export default function CalendarOverlay() {
             date1.getMonth() === date2.getMonth() &&
             date1.getDate() === date2.getDate();
     }
-
-    // function getCompletion(saveDay: SaveDayType | null): Completion {
-    //     if (!saveDay) return Completion.NOT_TRIED;
-
-    //     const foundCorrectGame = saveDay.guesses.findIndex((game) => game !== null && game.id === saveDay.correctGame.id) !== -1;
-
-    //     if (foundCorrectGame) return Completion.FOUND;
-
-    //     // Correct game was not found, are the guesses exhausted or can new guesses made?
-
-    //     const allGuesses = saveDay.guesses.findIndex((game) => game === null) !== -1;
-
-    //     if (allGuesses) return Completion.OUT_OF_GUESSES;
-
-    //     return Completion.MORE_GUESSES;
-    // }
 }
 
 function a(length: number): null[] {
@@ -181,38 +167,43 @@ const monthNames = [
     "April",
     "May",
     "June",
-    "July",
+    "szex",
     "Augustus",
     "September",
     "October",
     "November",
     "December",
-]
-
-// enum Completion {
-//     FOUND,
-//     OUT_OF_GUESSES,
-//     MORE_GUESSES,
-//     NOT_TRIED
-// }
+];
 
 function SelectedDayElement(props: { selectedDay?: number }) {
     if (!props.selectedDay) return null;
 
-    const dayData = getGameDataFromLocalStorage(props.selectedDay);
     const date = numberToDate(props.selectedDay)!;
+    const dayData = getGameDataFromLocalStorage(props.selectedDay);
 
     if (!dayData) {
-        return <div className="w-full flex items-center justify-center text-stone-500">
-            <a className="w-full h-10 bg-lime-500 text-black font-semibold rounded-lg flex items-center justify-center" href={`/?date=${props.selectedDay}`}>Play!</a>
-        </div>
+
+        if (!isAfter(now, date) && getDistanceInDays(now, date) <= 30) {
+            return <div className="w-full flex flex-col items-center justify-center text-stone-500">
+                <p className="text-lg mb-3 text-white">{date.getFullYear()}. {monthNames[date.getMonth()]} {date.getDate()}.</p>
+                <a className="w-full h-10 bg-lime-500 text-black font-semibold rounded-lg flex items-center justify-center" href={`/?date=${props.selectedDay}`}>Play!</a>
+            </div>;
+        }
+
+        return <div className="w-full flex flex-col items-center justify-center text-stone-500">
+            {/* FIXME: date.getDate() returns one day less then needed */}
+            <p className="text-lg">{date.getFullYear()}. {monthNames[date.getMonth()]} {date.getDate()}.</p>
+            <p className="text-center">
+                You can't access this day, because its in the future or too much in the past.
+            </p>
+        </div>;
     }
 
     return <>
         <div className="flex flex-row w-full gap-5">
             <div className="flex-1 flex flex-col">
                 <p className="text-sm leading-none">{date.getFullYear()}</p>
-                <p className="text-lg leading-none font-semibold">{monthNames[date.getMonth() - 1]} {date.getDate()}.</p>
+                <p className="text-lg leading-none font-semibold">{monthNames[date.getMonth()]} {date.getDate()}.</p>
 
                 <div className="flex-1 w-full my-2">
                     {
