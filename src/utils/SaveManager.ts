@@ -1,4 +1,4 @@
-import { Game } from "../../types/Game";
+import { Game } from "../types/Game";
 
 /**
  * Gets and parses the local game data.

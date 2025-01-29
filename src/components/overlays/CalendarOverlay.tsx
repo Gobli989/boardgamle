@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LeftChevronIcon, RightChevronIcon } from "../../../icons/Icons";
+import { LeftChevronIcon, RightChevronIcon } from "../../icons/Icons";
 import { dateToNumber, getGameDataFromLocalStorage, numberToDate } from "../../utils/SaveManager";
 import { finishedDayOnDay, guessCountToCorrectGameOnDay, guessedCorrectGameOnDay } from "../../utils/GameUtils";
 

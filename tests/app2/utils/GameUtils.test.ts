@@ -4,7 +4,7 @@ import {
     // finishedDayOnDay,
     // guessCountToCorrectGame,
     // guessCountToCorrectGameOnDay
-} from "../../../src/app2/utils/GameUtils";
+} from "../../../src/utils/GameUtils";
 
 import { Game } from "../../../src/types/Game";
 

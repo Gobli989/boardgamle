@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import App from './App.tsx';
-// import './main.css';
-import './app2/app2.css';
-import App2 from './app2/App2.tsx';
-import OverlayProvider from './app2/components/OverlayContext.tsx';
+import './app2.css';
+import App2 from './App2.tsx';
+import OverlayProvider from './components/OverlayContext.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([

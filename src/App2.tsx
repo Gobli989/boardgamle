@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import all_games from "../assets/all_games.json";
+import all_games from "./assets/all_games.json";
 import GuessCell from "./components/GuessCell";
-import { Game } from "../types/Game";
+import { Game } from "./types/Game";
 import StateManagedSelect from 'react-select';
 import Select from "react-select/base";
-import { renderCanvas } from "../utils/CanvasManager";
+import { renderCanvas } from "./utils/CanvasManager";
 import Navbar from "./components/navbar/Navbar";
-import { PlayersIcon, TimeIcon } from "../icons/Icons";
+import { PlayersIcon, TimeIcon } from "./icons/Icons";
 import { dateToNumber, getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/SaveManager";
-import { selectCorrectGameForDate } from "../utils/GameManager";
+import { selectCorrectGameForDate } from "./utils/GameManager";
 import { useSearchParams } from "react-router-dom";
 import { finishedDay } from "./utils/GameUtils";
 

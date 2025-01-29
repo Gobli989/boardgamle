@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { XIcon } from "../../icons/Icons";
+import { XIcon } from "../icons/Icons";
 
 const context = createContext<{
     closeAlert:(id:string) => void,

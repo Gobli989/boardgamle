@@ -1,6 +1,6 @@
 import "./NavbarItem.css";
 
-import { BugIcon, CalendarIcon, ChatIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../../icons/Icons";
+import { BugIcon, CalendarIcon, ChatIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../icons/Icons";
 import { useReducer, useState } from "react";
 import { useOverlay } from "../OverlayContext";
 import InfoOverlay from "../overlays/InfoOverlay";
