@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LeftChevronIcon, RightChevronIcon } from "../../icons/Icons";
-import { dateToNumber, getGameDataFromLocalStorage, numberToDate } from "../../utils/SaveManager";
+import { getGameDataFromLocalStorage } from "../../utils/SaveManager";
 import { finishedDayOnDay, guessCountToCorrectGameOnDay, guessedCorrectGameOnDay } from "../../utils/GameUtils";
 
 const now = new Date();
@@ -11,7 +11,7 @@ export default function CalendarOverlay() {
     const [month, setMonth] = useState<number>(now.getMonth());
     const [selectedDay, setSelectedDay] = useState<number>();
 
-    const dayOffset = new Date(year, month, 0).getDay() - 1;
+    const dayOffset = new Date(year, month, 0).getDay() - 2;
 
     return <div className="w-96">
         <h1 className="text-3xl font-bold mb-5">Previous days</h1>
@@ -59,7 +59,6 @@ export default function CalendarOverlay() {
 
                                 const date = new Date(year, month, dayIndex);
                                 const dayData = getGameDataFromLocalStorage(dateToNumber(date));
-                                // const completion = getCompletion(dayData);
 
                                 let guessColor = "bg-stone-700";
 
@@ -142,22 +141,6 @@ export default function CalendarOverlay() {
             date1.getMonth() === date2.getMonth() &&
             date1.getDate() === date2.getDate();
     }
-
-    // function getCompletion(saveDay: SaveDayType | null): Completion {
-    //     if (!saveDay) return Completion.NOT_TRIED;
-
-    //     const foundCorrectGame = saveDay.guesses.findIndex((game) => game !== null && game.id === saveDay.correctGame.id) !== -1;
-
-    //     if (foundCorrectGame) return Completion.FOUND;
-
-    //     // Correct game was not found, are the guesses exhausted or can new guesses made?
-
-    //     const allGuesses = saveDay.guesses.findIndex((game) => game === null) !== -1;
-
-    //     if (allGuesses) return Completion.OUT_OF_GUESSES;
-
-    //     return Completion.MORE_GUESSES;
-    // }
 }
 
 function a(length: number): null[] {
@@ -181,30 +164,22 @@ const monthNames = [
     "April",
     "May",
     "June",
-    "July",
+    "szex",
     "Augustus",
     "September",
     "October",
     "November",
     "December",
-]
-
-// enum Completion {
-//     FOUND,
-//     OUT_OF_GUESSES,
-//     MORE_GUESSES,
-//     NOT_TRIED
-// }
+];
 
 function SelectedDayElement(props: { selectedDay?: number }) {
     if (!props.selectedDay) return null;
 
     const dayData = getGameDataFromLocalStorage(props.selectedDay);
-    const date = numberToDate(props.selectedDay)!;
 
     if (!dayData) {
         return <div className="w-full flex items-center justify-center text-stone-500">
-            <a className="w-full h-10 bg-lime-500 text-black font-semibold rounded-lg flex items-center justify-center" href={`/?date=${props.selectedDay}`}>Play!</a>
+                <a className="w-full h-10 bg-lime-500 text-black font-semibold rounded-lg flex items-center justify-center" href={`/?date=${props.selectedDay}`}>Play!</a>
         </div>
     }
 
