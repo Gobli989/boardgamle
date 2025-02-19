@@ -8,7 +8,7 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      treeshake: 'smallest'
+      treeshake: "recommended",
     }
   }
 })
