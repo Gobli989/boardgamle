@@ -43,7 +43,7 @@ export default function BugReportOverlay() {
 
             </div>
 
-            <button className="rounded-xl bg-lime-500 px-5 py-2 mt-5 float-right" type="submit">Send Report</button>
+            <button className="rounded-xl bg-lime-500 dark:text-black px-5 py-2 mt-3" type="submit">Send Report</button>
 
         </form>
 

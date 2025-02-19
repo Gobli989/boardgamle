@@ -1,4 +1,4 @@
-import { Game } from "../../types/Game";
+import { Game } from "../types/Game";
 
 export default function GuessCell(props: { game?: Game, correctGame?: Game }) {
 

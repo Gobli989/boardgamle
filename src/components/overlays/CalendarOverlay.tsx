@@ -3,6 +3,7 @@ import { LeftChevronIcon, RightChevronIcon } from "../../icons/Icons";
 import { getGameDataFromLocalStorage } from "../../utils/SaveManager";
 import { finishedDayOnDay, guessCountToCorrectGameOnDay, guessedCorrectGameOnDay } from "../../utils/GameUtils";
 import { dateToNumber, getDistanceInDays, isAfter, numberToDate } from "../../utils/DateUtils";
+import { motion } from "motion/react";
 
 const now = new Date();
 
@@ -199,6 +200,20 @@ function SelectedDayElement(props: { selectedDay?: number }) {
         </div>;
     }
 
+    const listVariant = {
+        visible: {
+            transition: {
+                when: "beforeChildren",
+                staggerChildren: 0.05, // Stagger children by .3 seconds
+            },
+        },
+    }
+
+    const itemVariant = {
+        visible: { opacity: 1, x: 0 },
+        hidden: { opacity: 0, x: -10 },
+    }
+
     return <>
         <div className="flex flex-row w-full gap-5">
             <div className="flex-1 flex flex-col">
@@ -217,7 +232,12 @@ function SelectedDayElement(props: { selectedDay?: number }) {
                 <a className="w-full h-10 bg-lime-500 text-black font-semibold rounded-lg flex items-center justify-center" href={`/?date=${props.selectedDay}`}>Play!</a>
 
             </div>
-            <div className="flex-1 overflow-x-hidden">
+            <motion.ul
+                className="flex-1 overflow-x-hidden"
+                variants={listVariant}
+                initial="hidden"
+                whileInView="visible"
+            >
                 <p>Guesses:</p>
 
                 {
@@ -225,21 +245,32 @@ function SelectedDayElement(props: { selectedDay?: number }) {
                     dayData.guesses.map((game, i) => {
 
                         if (game === null) {
-                            return <div className="w-full rounded-lg border h-8 border-stone-500 py-1 mt-2" key={"ddg-" + i} />;
+                            return <motion.li
+                                className="w-full rounded-lg border h-8 border-stone-500 py-1 mt-2" key={"ddg-" + i}
+                                variants={itemVariant}
+                            />;
                         }
 
                         if (game.id === dayData.correctGame.id) {
-                            return <div className="w-full h-8 flex items-center rounded-lg bg-lime-500 text-black px-2 mt-2" key={"ddg-" + i}>
+                            return <motion.li
+                                className="w-full h-8 flex items-center rounded-lg bg-lime-500 text-black px-2 mt-2"
+                                key={"ddg-" + i}
+                                variants={itemVariant}
+                            >
                                 <span className="text-xs text-nowrap text-ellipsis overflow-hidden">{game.name}</span>
-                            </div>;
+                            </motion.li>;
                         }
 
-                        return <div className="w-full h-8 flex items-center rounded-lg border border-stone-500 px-2 mt-2" key={"ddg-" + i}>
+                        return <motion.li
+                            className="w-full h-8 flex items-center rounded-lg border border-stone-500 px-2 mt-2"
+                            key={"ddg-" + i}
+                            variants={itemVariant}
+                        >
                             <span className="text-xs text-nowrap text-ellipsis overflow-hidden">{game.name}</span>
-                        </div>;
+                        </motion.li>;
                     })
                 }
-            </div>
+            </motion.ul>
         </div>
     </>;
 }

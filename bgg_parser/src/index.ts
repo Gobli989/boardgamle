@@ -2,7 +2,6 @@ import { loadCacheFromFile, saveCacheToFile } from './CacheManager.js';
 import { fetchGamePage, fetchRanklistPage } from './HtmlFetcher.js';
 import { parseGamePage, parseRankList } from './HtmlParser.js';
 import { Game } from './types/Game.js';
-import { Delay } from './utils/Utils.js';
 import fs from 'fs';
 
 // First we load the cache from file
@@ -31,13 +30,6 @@ for(let i = 0; i < games.length; i++) {
     games[i] = updatedGame;
 
     console.log('Game:', updatedGame.rank, updatedGame.name, updatedGame.year, updatedGame.geekRating, updatedGame.complexityRating);
-    
-    // if(i % 3 == 0) {
-    //     // Save cache every 3 games and wait for 5 seconds
-    //     saveCacheToFile();
-
-    //     await Delay(5000);
-    // }
 
 }
 

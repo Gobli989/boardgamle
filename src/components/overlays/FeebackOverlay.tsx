@@ -28,7 +28,7 @@ export default function FeedbackOverlay() {
                 <textarea className="outline-none w-full border border-stone-200 dark:border-stone-600 dark:bg-stone-800 p-2 rounded-xl resize-none" name="fb_message" id="fb_message" rows={12} placeholder="Your message comes here..." required />
             </div>
 
-            <button className="rounded-xl bg-lime-500 dark:text-black px-5 py-2 mt-3 float-right" type="submit">Send Feedback</button>
+            <button className="rounded-xl bg-lime-500 dark:text-black px-5 py-2 mt-3" type="submit">Send Feedback</button>
 
         </form>
 
