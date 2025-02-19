@@ -9,6 +9,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       treeshake: "recommended",
+      output: {
+
+        manualChunks: {
+          reactSelect: ["react-select"],
+          motion: ["motion"],
+        }
+      }
     }
   }
 })
