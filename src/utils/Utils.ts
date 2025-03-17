@@ -1,4 +1,4 @@
-import { Day } from "../types/Day";
+// TODO: Create a seeded random number generator which does not repeat the games for previous games.
 
 /**
  * Custom seedable random number generator
@@ -6,7 +6,7 @@ import { Day } from "../types/Day";
  * @param seed seed for the random number generator
  * @returns {number} random number between 0 and 1
  */
-export function seededRandom(seed: number): number {
+export function seededRandom(seed?: number): number {
   const m = 1236967814;
   const a = 7618742178;
   const c = 9873214987;
@@ -35,13 +35,10 @@ export function isDarkModeEnabled(): boolean {
  * @param str String in the format "YYYY-MM-DD"
  * @returns {Day} Day object
  */
-export function stringToDay(str: string): Day {
+export function stringToDay(str: string): Date {
   const split = str.split("-");
-  return {
-    y: parseInt(split[0]),
-    m: parseInt(split[1]),
-    d: parseInt(split[2]),
-  };
+
+  return new Date(parseInt(split[0]), parseInt(split[1]) - 1, parseInt(split[2]));
 }
 
 /**
@@ -50,8 +47,8 @@ export function stringToDay(str: string): Day {
  * @param day Day object
  * @returns {string} String in the format "YYYY-MM-DD"
  */
-export function dayToString(day: Day): string {
-  return `${day.y}-${day.m}-${day.d}`;
+export function dayToString(day: Date): string {
+  return `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`;
 }
 
 /**
@@ -88,4 +85,8 @@ export function getMonthName(month: number): string {
       return "December";
   }
   return "Invalid";
+}
+
+export function trunc(value: number, decimals: number = 2): number {
+  return parseFloat(value.toFixed(decimals));
 }

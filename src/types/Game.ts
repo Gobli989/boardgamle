@@ -1,8 +1,13 @@
 export type Game = {
-  id: number;
+  id: string;
+  rank: number;
   name: string;
   year: number;
-  imageURL: string;
-  firstPublisherName: string;
-  firstArtistName: string;
+  url: string;
+  imageUrl: string;
+  complexityRating: number;
+  minPlayers: number;
+  maxPlayers: number;
+  minPlaytime: number;
+  maxPlaytime: number;
 };

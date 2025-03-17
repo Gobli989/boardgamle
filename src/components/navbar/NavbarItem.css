@@ -1,0 +1,23 @@
+.navbar-item {
+    position: relative;
+}
+
+.navbar-item:hover::after {
+    opacity: 1;
+
+    transition: opacity 100ms ease;
+}
+
+.navbar-item::after {
+    content: "";
+    position: absolute;
+    left: 3rem;
+    top: 0;
+    padding: 5px 1rem;
+    border-radius: 10px;
+    background-color: #e5e5e5;
+    opacity: 0;
+    transition: opacity 100ms ease;
+    pointer-events: none;
+    text-wrap: nowrap;
+}
