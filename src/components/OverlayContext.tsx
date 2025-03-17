@@ -59,6 +59,11 @@ export default function OverlayProvider(props: { children?: React.ReactNode }) {
     }
 
     function showAlert(alert: Alert) {
+
+        if(alerts.findIndex((a) => a.id === alert.id) !== -1) {
+            return;
+        }
+
         setAlerts([
             ...alerts,
             alert

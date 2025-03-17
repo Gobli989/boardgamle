@@ -1,15 +1,17 @@
 import "./NavbarItem.css";
 
-import { CalendarIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../icons/Icons";
+import { CalendarIcon, ClockFilledIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../icons/Icons";
 import { useReducer, useState } from "react";
 import { useOverlay } from "../OverlayContext";
 import InfoOverlay from "../overlays/InfoOverlay";
 // import BugReportOverlay from "../overlays/BugReportOverlay";
 // import FeedbackOverlay from "../overlays/FeebackOverlay";
 import CalendarOverlay from "../overlays/CalendarOverlay";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
 
+    const navigate = useNavigate();
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     const overlay = useOverlay();
     const [open, setOpen] = useState<boolean>(false);
@@ -20,7 +22,7 @@ export default function Navbar() {
             <ListIcon className="w-full h-full fill-black dark:fill-white" />
         </button>
 
-        <nav className={`fixed ${open ? "left-0 md:left-0" : "-left-full md:left-0"} top-0 h-screen w-screen md:w-12 bg-neutral-50 dark:bg-stone-800 flex flex-col md:items-center px-5 md:px-0 pt-5 gap-2 z-10 transition-all`}>
+        <nav className={`fixed ${open ? "left-0 md:left-0" : "-left-full md:left-0"} top-0 h-screen w-screen md:w-12 bg-neutral-50 dark:bg-stone-800 flex flex-col md:items-center px-5 md:px-0 pt-5 gap-2 z-30 transition-all`}>
 
             {/* Close button */}
             <button className="absolute top-5 right-5 w-6 h-6 block md:hidden" onClick={() => setOpen(false)}>
@@ -86,6 +88,12 @@ export default function Navbar() {
                     content: <FeedbackOverlay />
                 })}
             /> */}
+
+            <NavbarItem
+                icon={<ClockFilledIcon className="fill-black dark:fill-white" />}
+                name="View Changelogs"
+                onClick={() => navigate("/changelog")}
+            />
 
         </nav>
     </>;

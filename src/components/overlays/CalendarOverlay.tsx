@@ -19,7 +19,7 @@ export default function CalendarOverlay() {
 
         <div className="mb-6">
             <h1 className="text-3xl font-bold">Previous days</h1>
-            <p className="text-sm text-stone-500">You can replay the past 30 days but cannot play games set in the future.</p>
+            <p className="text-sm text-stone-400">You can replay the past 30 days but cannot play games set in the future.</p>
         </div>
 
         {/* Month chooser */}
@@ -66,7 +66,7 @@ export default function CalendarOverlay() {
                                 const date = new Date(year, month, dayIndex);
                                 const dayData = getGameDataFromLocalStorage(dateToNumber(date));
 
-                                let guessColor = "bg-stone-700";
+                                let guessColor = "bg-stone-200 dark:bg-stone-700";
 
                                 if (dayData) {
 
@@ -74,22 +74,22 @@ export default function CalendarOverlay() {
 
                                         if (guessedCorrectGameOnDay(dayData)) {
                                             switch (guessCountToCorrectGameOnDay(dayData)) {
-                                                case 0: guessColor = "bg-lime-500"; break;
-                                                case 1: guessColor = "bg-lime-600"; break;
-                                                case 2: guessColor = "bg-lime-700"; break;
-                                                case 3: guessColor = "bg-lime-800"; break;
-                                                case 4: guessColor = "bg-lime-900"; break;
+                                                case 0: guessColor = "bg-lime-500 dark:bg-lime-500 text-white"; break;
+                                                case 1: guessColor = "bg-lime-400 dark:bg-lime-600 text-white"; break;
+                                                case 2: guessColor = "bg-lime-300 dark:bg-lime-700 text-white"; break;
+                                                case 3: guessColor = "bg-lime-200 dark:bg-lime-800 text-white"; break;
+                                                case 4: guessColor = "bg-lime-100 dark:bg-lime-900 text-white"; break;
                                             }
                                         } else {
-                                            guessColor = "bg-yellow-800";
+                                            guessColor = "bg-yellow-500 dark:bg-yellow-800 text-white";
                                         }
                                     } else {
-                                        guessColor = "bg-stone-500";
+                                        guessColor = "bg-stone-300 dark:bg-stone-500";
                                     }
                                 }
 
                                 // Rendering each day
-                                return <button className={`flex-1 flex flex-row items-center justify-center h-12 m-1 rounded-md border border-stone-600 text-black dark:text-white ${date.getMonth() !== month ? "opacity-50 pointer-events-none" : ""} ${sameDay(now, date) ? "border-lime-500 border-2" : ""} ${guessColor} ${(isAfter(now, date) || getDistanceInDays(now, date) > 30) ? "!bg-neutral-700" : ""}`}
+                                return <button className={`flex-1 flex flex-row items-center justify-center h-12 m-1 rounded-md border dark:border-stone-600 text-black dark:text-white ${date.getMonth() !== month ? "opacity-50 pointer-events-none" : ""} ${sameDay(now, date) ? "border-lime-500 border-2" : ""} ${guessColor} ${(isAfter(now, date) || getDistanceInDays(now, date) > 30) ? "bg-red-50 dark:!bg-neutral-700" : ""}`}
                                     onClick={() => {
                                         if (!isAfter(now, date) || getDistanceInDays(now, date) <= 30) {
                                             setSelectedDay(dateToNumber(date));

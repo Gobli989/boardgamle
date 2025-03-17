@@ -12,17 +12,18 @@ import { selectCorrectGameForDate } from "./utils/GameManager";
 import { useSearchParams } from "react-router-dom";
 import { finishedDay } from "./utils/GameUtils";
 import { dateToNumber } from "./utils/DateUtils";
+import Footer from "./components/footer/Footer";
 
 export default function App2() {
 
     const [searchParams] = useSearchParams();
 
-    if(searchParams.has("date")) {
+    if (searchParams.has("date")) {
         const dateString = searchParams.get("date");
 
         console.log("date param:", dateString);
 
-        if(!dateString || !/\d{4}[0,1]\d[0-3]\d/.test(dateString)) {
+        if (!dateString || !/\d{4}[0,1]\d[0-3]\d/.test(dateString)) {
             window.location.search = "";
         }
     }
@@ -76,7 +77,7 @@ export default function App2() {
 
     }, [canvasRef, guesses, correctGame]);
 
-    return <div className="min-w-full min-h-full dark:bg-stone-900">
+    return <div className="min-w-full min-h-screen dark:bg-stone-900">
         <Navbar />
 
         <main className="block max-w-screen-lg mx-auto">
@@ -170,17 +171,7 @@ export default function App2() {
 
         </main>
 
-        <footer className="w-full h-24 mt-24 bg-gray-50 dark:bg-stone-800 border-t border-gray-300 dark:border-stone-600 flex flex-col justify-center items-center">
-            <p className="text-black dark:text-white">
-                Made with
-                &nbsp;
-                <span className="text-rainbow-anim inline-block">❤</span>
-                &nbsp;
-                by
-                &nbsp;
-                <a href="https://rubenxd.hu" target="_blank" className="underline">Ruben</a>
-            </p>
-        </footer>
+        <Footer />
     </div>;
 
     /**
