@@ -1,11 +1,11 @@
 import "./NavbarItem.css";
 
-import { BugIcon, CalendarIcon, ChatIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../icons/Icons";
+import { CalendarIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../icons/Icons";
 import { useReducer, useState } from "react";
 import { useOverlay } from "../OverlayContext";
 import InfoOverlay from "../overlays/InfoOverlay";
-import BugReportOverlay from "../overlays/BugReportOverlay";
-import FeedbackOverlay from "../overlays/FeebackOverlay";
+// import BugReportOverlay from "../overlays/BugReportOverlay";
+// import FeedbackOverlay from "../overlays/FeebackOverlay";
 import CalendarOverlay from "../overlays/CalendarOverlay";
 
 export default function Navbar() {
@@ -64,7 +64,10 @@ export default function Navbar() {
                 })}
             />
 
-            <NavbarItem
+            {/*
+                TODO: Add back bug report and feedback pages.
+            */}
+            {/* <NavbarItem
                 icon={<BugIcon className="fill-black dark:fill-white" />}
                 name="Report a bug!"
                 onClick={() => overlay.showAlert({
@@ -72,9 +75,9 @@ export default function Navbar() {
                     showCloseButton: true,
                     content: <BugReportOverlay />
                 })}
-            />
+            /> */}
 
-            <NavbarItem
+            {/* <NavbarItem
                 icon={<ChatIcon className="fill-black dark:fill-white" />}
                 name="Give feedback!"
                 onClick={() => overlay.showAlert({
@@ -82,7 +85,7 @@ export default function Navbar() {
                     showCloseButton: true,
                     content: <FeedbackOverlay />
                 })}
-            />
+            /> */}
 
         </nav>
     </>;
@@ -98,7 +101,7 @@ function NavbarItem(props: {
         data-name={props.name}
         onClick={props.onClick}
         aria-label={props.name}
-        >
+    >
         {props.icon}
 
         <span className="inline md:hidden">

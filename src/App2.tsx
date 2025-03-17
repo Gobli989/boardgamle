@@ -17,6 +17,16 @@ export default function App2() {
 
     const [searchParams] = useSearchParams();
 
+    if(searchParams.has("date")) {
+        const dateString = searchParams.get("date");
+
+        console.log("date param:", dateString);
+
+        if(!dateString || !/\d{4}[0,1]\d[0-3]\d/.test(dateString)) {
+            window.location.search = "";
+        }
+    }
+
     const [today, setToday] = useState<number>(getDayNumber());
     const [correctGame, setCorrectGame] = useState<Game>();
     const canvasRef = useRef<HTMLCanvasElement>(null);
