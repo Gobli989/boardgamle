@@ -5,12 +5,20 @@ import App2 from './App2.tsx';
 import OverlayProvider from './components/OverlayContext.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
+import ChangelogPage from './pages/Changelog.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (<OverlayProvider>
       <App2 />
+    </OverlayProvider>),
+    errorElement: < ErrorBoundary />
+  },
+  {
+    path: '/changelog',
+    element: (<OverlayProvider>
+      <ChangelogPage />
     </OverlayProvider>),
     errorElement: < ErrorBoundary />
   }
