@@ -74,11 +74,11 @@ export default function CalendarOverlay() {
 
                                         if (guessedCorrectGameOnDay(dayData)) {
                                             switch (guessCountToCorrectGameOnDay(dayData)) {
-                                                case 0: guessColor = "bg-lime-500 dark:bg-lime-500 text-white"; break;
-                                                case 1: guessColor = "bg-lime-400 dark:bg-lime-600 text-white"; break;
-                                                case 2: guessColor = "bg-lime-300 dark:bg-lime-700 text-white"; break;
-                                                case 3: guessColor = "bg-lime-200 dark:bg-lime-800 text-white"; break;
-                                                case 4: guessColor = "bg-lime-100 dark:bg-lime-900 text-white"; break;
+                                                case 0: guessColor = "bg-lime-500 dark:bg-lime-500 text-black dark:text-white"; break;
+                                                case 1: guessColor = "bg-lime-400 dark:bg-lime-600 text-black dark:text-white"; break;
+                                                case 2: guessColor = "bg-lime-300 dark:bg-lime-700 text-black dark:text-white"; break;
+                                                case 3: guessColor = "bg-lime-200 dark:bg-lime-800 text-black dark:text-white"; break;
+                                                case 4: guessColor = "bg-lime-100 dark:bg-lime-900 text-black dark:text-white"; break;
                                             }
                                         } else {
                                             guessColor = "bg-yellow-500 dark:bg-yellow-800 text-white";

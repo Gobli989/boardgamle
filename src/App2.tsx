@@ -11,7 +11,7 @@ import { getGameDataFromLocalStorage, saveGameToLocalStorage } from "./utils/Sav
 import { selectCorrectGameForDate } from "./utils/GameManager";
 import { useSearchParams } from "react-router-dom";
 import { finishedDay } from "./utils/GameUtils";
-import { dateToNumber } from "./utils/DateUtils";
+import { dateToNumber, numberToDate } from "./utils/DateUtils";
 import Footer from "./components/footer/Footer";
 
 export default function App2() {
@@ -36,13 +36,13 @@ export default function App2() {
 
     useEffect(() => {
         const dateNum = getDayNumber();
-
+        const dateDate = numberToDate(dateNum)!;
         const dayData = getGameDataFromLocalStorage(dateNum);
 
         if (dayData === null) {
             // No game data found, creating an empty one
             setCorrectGame(
-                selectCorrectGameForDate(all_games, dateNum)
+                selectCorrectGameForDate(all_games, dateDate)
             );
 
             return;

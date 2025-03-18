@@ -1,6 +1,6 @@
 import { Game } from "../types/Game";
-import { dateToNumber } from "./DateUtils";
-import { seededRandom } from "./Utils";
+import { getDistanceInDays } from "./DateUtils";
+import { NonRepeatingRandom } from "./RandomUtils";
 
 /**
  * Selects a random game from the array based on the current date
@@ -11,14 +11,23 @@ import { seededRandom } from "./Utils";
 export function selectTodaysGame(games: Game[]): Game {
     const now = new Date();
     
-    return selectCorrectGameForDate(games, dateToNumber(now));
+    return selectCorrectGameForDate(games, now);
 }
 
-export function selectCorrectGameForDate(games: Game[], date: number) {
+export function selectCorrectGameForDate(games: Game[], date: Date) {
     if (games.length === 0) throw new Error("No games to select from");
 
-    const todays_seed = seededRandom(date);
-    const game = games[Math.floor(todays_seed * games.length)];
+    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+    const rng = new NonRepeatingRandom(games.length, date.getFullYear(), 366);
+    
+
+    let num = rng.next();
+
+    for(let i = 0; i < getDistanceInDays(firstDayOfYear, date); i++) {
+        num = rng.next();
+    }
+
+    const game = games[num];
 
     return game;
 }

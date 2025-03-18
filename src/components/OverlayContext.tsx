@@ -25,7 +25,7 @@ export default function OverlayProvider(props: { children?: React.ReactNode }) {
         <AnimatePresence>
             {/* Overlay Container */}
             {alerts.length > 0 && <div
-                className="fixed top-0 left-0 w-screen h-screen z-20 flex justify-center items-center backdrop-blur-md bg-black/5">
+                className="fixed top-0 left-0 w-screen h-screen z-40 flex justify-center items-center backdrop-blur-md bg-black/5">
                 {alerts.map((alert) => (
                     <motion.div
                         key={`alert-${alert.id}`}
