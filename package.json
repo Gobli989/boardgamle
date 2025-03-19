@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4",
+    "@yudiel/react-qr-scanner": "^2.2.1",
     "motion": "^12.4.5",
     "peerjs": "^1.5.4",
     "react": "^18.3.1",
