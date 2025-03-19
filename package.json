@@ -14,8 +14,10 @@
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4",
     "motion": "^12.4.5",
+    "peerjs": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-qr-code": "^2.0.15",
     "react-router-dom": "^7.1.1",
     "react-select": "^5.8.1"
   },

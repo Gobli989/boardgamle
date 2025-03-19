@@ -82,3 +82,33 @@ export function ClockFilledIcon(props: { className?: string }) {
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
     </svg>;
 }
+
+export function Users(props: { className?: string }) {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className={props.className} viewBox="0 0 16 16">
+        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+    </svg>;
+}
+
+export function QRCode(props: { className?: string }) {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className={props.className} viewBox="0 0 16 16">
+        <path d="M2 2h2v2H2z" />
+        <path d="M6 0v6H0V0zM5 1H1v4h4zM4 12H2v2h2z" />
+        <path d="M6 10v6H0v-6zm-5 1v4h4v-4zm11-9h2v2h-2z" />
+        <path d="M10 0v6h6V0zm5 1v4h-4V1zM8 1V0h1v2H8v2H7V1zm0 5V4h1v2zM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8zm0 0v1H2V8H1v1H0V7h3v1zm10 1h-1V7h1zm-1 0h-1v2h2v-1h-1zm-4 0h2v1h-1v1h-1zm2 3v-1h-1v1h-1v1H9v1h3v-2zm0 0h3v1h-2v1h-1zm-4-1v1h1v-2H7v1z" />
+        <path d="M7 12h1v3h4v1H7zm9 2v2h-3v-1h2v-1z" />
+    </svg>;
+}
+
+export function EyeIcon(props: { className?: string }) {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={props.className} viewBox="0 0 16 16">
+        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+    </svg>
+}
+
+export function EyeCrossedIcon(props: { className?: string }) {
+    return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={props.className} viewBox="0 0 16 16">
+        <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z" />
+        <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z" />
+    </svg>;
+}

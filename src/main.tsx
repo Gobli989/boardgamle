@@ -6,26 +6,33 @@ import OverlayProvider from './components/OverlayContext.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
 import ChangelogPage from './pages/Changelog.tsx';
+import MultiplayerPage from './pages/multiplayer/MultiplayerPage.tsx';
+import PeerProvider from './components/peer/PeerProvider.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (<OverlayProvider>
-      <App2 />
-    </OverlayProvider>),
+    element: <App2 />,
     errorElement: < ErrorBoundary />
   },
   {
     path: '/changelog',
-    element: (<OverlayProvider>
-      <ChangelogPage />
-    </OverlayProvider>),
+    element: <ChangelogPage />,
+    errorElement: < ErrorBoundary />
+  },
+  {
+    path: '/multiplayer',
+    element: <MultiplayerPage />,
     errorElement: < ErrorBoundary />
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <PeerProvider>
+      <OverlayProvider>
+        <RouterProvider router={router} />
+      </OverlayProvider>
+    </PeerProvider>
   </React.StrictMode>
 );

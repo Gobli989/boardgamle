@@ -1,6 +1,6 @@
 import "./NavbarItem.css";
 
-import { CalendarIcon, ClockFilledIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, XIcon } from "../../icons/Icons";
+import { CalendarIcon, ClockFilledIcon, InfoIcon, ListIcon, MoonIcon, SunIcon, Users, XIcon } from "../../icons/Icons";
 import { useReducer, useState } from "react";
 import { useOverlay } from "../OverlayContext";
 import InfoOverlay from "../overlays/InfoOverlay";
@@ -93,6 +93,12 @@ export default function Navbar() {
                 icon={<ClockFilledIcon className="fill-black dark:fill-white" />}
                 name="View Changelogs"
                 onClick={() => navigate("/changelog")}
+            />
+            
+            <NavbarItem
+                icon={<Users className="fill-black dark:fill-white" />}
+                name="Multiplayer"
+                onClick={() => navigate("/multiplayer")}
             />
 
         </nav>
