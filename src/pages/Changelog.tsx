@@ -13,15 +13,33 @@ export default function ChangelogPage() {
                 <LeftChevronIcon className="fill-black dark:fill-white inline-block" /> Go back home
             </Link>
 
+            <section id="v2_0_1" className="mt-24 relative">
+                <Title
+                    // TODO: Change this date whenever I release it
+                    date="2025. 03. 19."
+                    backText="Changelog"
+                >
+                    Non repeating rng v2.0.1
+                </Title>
+
+                <p className="text-balance text-lg">Finally made a non repeating Random Number Generator, so all the games throughout a year all the games will be different.</p>
+
+            </section>
+
             <section id="v2" className="mt-24 relative">
-                <span className="-top-14 text-8xl font-extrabold tracking-tighter absolute text-stone-100 dark:text-stone-800 pointer-events-none select-none text-nowrap">Changelog</span>
-                <h2 className="text-5xl font-extrabold mb-3 relative z-10 leading-10 md:leading-normal">Boardgamle v2 <span className="text-sm font-semibold text-stone-400 italic block md:inline">2025. 03. 17.</span></h2>
+
+                <Title
+                    date="2025. 03. 17."
+                    backText="Changelog"
+                >
+                    Boardgamle v2
+                </Title>
 
                 <p className="text-balance text-lg">Boardgamle has been completely rewritten, introducing a fresh new design and several major enhancements for better user experience.</p>
 
                 <div className="mt-10">
                     <h3 className="text-2xl font-bold">New Features & Improvements:</h3>
-                    
+
                     <ul className="list-disc text-lg">
 
                         <li>Revamped UI with animations</li>
@@ -94,4 +112,11 @@ export default function ChangelogPage() {
 
         <Footer />
     </div>;
+}
+
+function Title(props: { children: React.ReactNode, date?: string, backText?: string }) {
+    return <>
+        {props.backText && <span className="-top-14 text-8xl font-extrabold tracking-tighter absolute text-stone-100 dark:text-stone-800 pointer-events-none select-none text-nowrap">{props.backText}</span>}
+        <h2 className="text-5xl font-extrabold mb-3 relative z-10 leading-10 md:leading-normal">{props.children} {props.date && <span className="text-sm font-semibold text-stone-400 italic block md:inline">{props.date}</span>}</h2>
+    </>
 }
