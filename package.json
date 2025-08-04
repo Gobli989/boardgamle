@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build && git rev-parse --short HEAD > dist/commit.txt",
     "build_bgg_parser": "cd bgg_parser && npm run build",
+    "run_bgg_parser": "cd bgg_parser && npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "jest"
