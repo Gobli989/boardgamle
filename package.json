@@ -10,7 +10,9 @@
     "run_bgg_parser": "cd bgg_parser && npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "all_unix": "npm run build_bgg_parser && npm run run_bgg_parser && mv ./bgg_parser/all_games.json ./all_games.json && npm run build",
+    "all_win": "npm run build_bgg_parser && npm run run_bgg_parser && move /Y .\\bgg_parser\\all_games.json .\\all_games.json && npm run build"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4",
